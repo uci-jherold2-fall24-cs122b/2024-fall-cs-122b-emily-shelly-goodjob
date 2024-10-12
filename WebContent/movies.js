@@ -26,17 +26,11 @@ function handleStarResult(resultData) {
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<tr>";
-        // rowHTML +=
-        //     "<th>" +
-        //     // Add a link to single-star.html with id passed with GET url parameter
-        //     '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
-        //     + resultData[i]["movie_title"] +     // display star_name for the link text
-        //     '</a>' +
-        //     "</th>";
         rowHTML +=
             "<th>" +
-            // Add a link to single-movie.html with id passed with GET url parameter
-            resultData[i]["movie_title"] +     // display star_name for the link text
+            // Add a link to single-star.html with id passed with GET url parameter
+            '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
+            + resultData[i]["movie_title"] +     // display star_name for the link text
             '</a>' +
             "</th>";
         rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
