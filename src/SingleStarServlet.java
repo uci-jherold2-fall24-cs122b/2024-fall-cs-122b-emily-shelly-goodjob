@@ -51,13 +51,15 @@ public class SingleStarServlet extends HttpServlet {
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
-            String query = "SELECT s.name, " +
-                    "IFNULL(s.birthYear, 'N/A') AS birthYear, " +
-                    "m.id AS movieId, m.title AS movieTitle " +
+            String query = "SELECT s.name AS starName, " +
+                    "IFNULL(s.birthYear, 'N/A') AS starBirthYear, " +
+                    "GROUP_CONCAT(DISTINCT m.title ORDER BY m.title) AS movies, " +
+                    "GROUP_CONCAT(DISTINCT m.id ORDER BY m.title) AS movieIds " +
                     "FROM stars s " +
                     "JOIN stars_in_movies sim ON sim.starId = s.id " +
                     "JOIN movies m ON m.id = sim.movieId " +
-                    "WHERE s.id = ?";
+                    "WHERE s.id = ? " +
+                    "GROUP BY s.id";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -72,33 +74,33 @@ public class SingleStarServlet extends HttpServlet {
             JsonArray jsonArray = new JsonArray();
 
             JsonObject starJsonObject = new JsonObject();
-            JsonArray moviesArray = new JsonArray();
 
-            boolean firstRow = true;
             // Iterate through each row of rs
             while (rs.next()) {
-                if (firstRow) {
-                    // Add star information (only once)
-                    String starName = rs.getString("name");
-                    String starDob = rs.getString("birthYear");
+                // Add star information (only once)
+                String starName = rs.getString("name");
+                String starDob = rs.getString("starBirthYear");
 
-                    starJsonObject.addProperty("star_name", starName);
-                    starJsonObject.addProperty("star_dob", starDob);
-
-                    firstRow = false;
-                }
+                starJsonObject.addProperty("star_name", starName);
+                starJsonObject.addProperty("star_dob", starDob);
 
                 // Movie
-                String movieId = rs.getString("movieId");
-                String movieTitle = rs.getString("movieTitle");
+                String movieIds = rs.getString("movieIds");
+                String movieTitles = rs.getString("movies");
 
-                JsonObject movieJsonObject = new JsonObject();
-                movieJsonObject.addProperty("movie_id", movieId);
-                movieJsonObject.addProperty("movie_title", movieTitle);
+                // Add movies
+                JsonArray moviesArray = new JsonArray();
+                String[] movie_Titles = movieTitles.split(",");
+                String[] movie_Ids = movieIds.split(",");
+                for (int i = 0; i < movie_Titles.length; i++) {
+                    JsonObject movie = new JsonObject();
+                    movie.addProperty("movie_id", movie_Ids[i]);
+                    movie.addProperty("movie_title", movie_Titles[i]);
+                    moviesArray.add(movie);
+                }
 
-                moviesArray.add(movieJsonObject);
+                starJsonObject.add("movies", moviesArray);
             }
-            starJsonObject.add("movies", moviesArray);
 
             rs.close();
             statement.close();

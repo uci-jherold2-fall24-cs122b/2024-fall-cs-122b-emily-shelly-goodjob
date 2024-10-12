@@ -56,7 +56,7 @@ function handleResult(resultData) {
 
     // Populate the star table
     // Find the empty table body by id "star_table_body"
-    let movieTableBodyElement = jQuery("#star_table_body");
+    let starTableBodyElement = jQuery("#star_table_body");
 
     let movieStars = resultData["movie_stars"];
     for (let i = 0; i < movieStars.length; i++) {
@@ -67,7 +67,7 @@ function handleResult(resultData) {
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
-        movieTableBodyElement.append(rowHTML);
+        starTableBodyElement.append(rowHTML);
     }
 }
 
