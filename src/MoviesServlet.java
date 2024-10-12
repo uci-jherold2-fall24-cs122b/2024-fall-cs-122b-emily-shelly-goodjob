@@ -124,7 +124,6 @@ public class MoviesServlet extends HttpServlet {
 //                jsonObject.addProperty("star_id", star_id);
 //                jsonObject.addProperty("star_name", star_name);
 //                jsonObject.addProperty("star_dob", star_dob);
-                System.out.println(jsonObject.toString());  // Log to see if movie_director is there
 
                 jsonArray.add(jsonObject);
             }

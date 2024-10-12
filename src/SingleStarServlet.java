@@ -25,7 +25,7 @@ public class SingleStarServlet extends HttpServlet {
 
     public void init(ServletConfig config) {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedbexample");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -51,10 +51,13 @@ public class SingleStarServlet extends HttpServlet {
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
-
-            // Construct a query with parameter represented by "?"
-            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m " +
-                    "where m.id = sim.movieId and sim.starId = s.id and s.id = ?";
+            String query = "SELECT s.name, " +
+                    "IFNULL(s.birthYear, 'N/A') AS birthYear, " +
+                    "m.id AS movieId, m.title AS movieTitle " +
+                    "FROM stars s " +
+                    "JOIN stars_in_movies sim ON sim.starId = s.id " +
+                    "JOIN movies m ON m.id = sim.movieId " +
+                    "WHERE s.id = ?";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -68,31 +71,35 @@ public class SingleStarServlet extends HttpServlet {
 
             JsonArray jsonArray = new JsonArray();
 
+            JsonObject starJsonObject = new JsonObject();
+            JsonArray moviesArray = new JsonArray();
+
+            boolean firstRow = true;
             // Iterate through each row of rs
             while (rs.next()) {
+                if (firstRow) {
+                    // Add star information (only once)
+                    String starName = rs.getString("name");
+                    String starDob = rs.getString("birthYear");
 
-                String starId = rs.getString("starId");
-                String starName = rs.getString("name");
-                String starDob = rs.getString("birthYear");
+                    starJsonObject.addProperty("star_name", starName);
+                    starJsonObject.addProperty("star_dob", starDob);
 
+                    firstRow = false;
+                }
+
+                // Movie
                 String movieId = rs.getString("movieId");
-                String movieTitle = rs.getString("title");
-                String movieYear = rs.getString("year");
-                String movieDirector = rs.getString("director");
+                String movieTitle = rs.getString("movieTitle");
 
-                // Create a JsonObject based on the data we retrieve from rs
+                JsonObject movieJsonObject = new JsonObject();
+                movieJsonObject.addProperty("movie_id", movieId);
+                movieJsonObject.addProperty("movie_title", movieTitle);
 
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_id", starId);
-                jsonObject.addProperty("star_name", starName);
-                jsonObject.addProperty("star_dob", starDob);
-                jsonObject.addProperty("movie_id", movieId);
-                jsonObject.addProperty("movie_title", movieTitle);
-                jsonObject.addProperty("movie_year", movieYear);
-                jsonObject.addProperty("movie_director", movieDirector);
-
-                jsonArray.add(jsonObject);
+                moviesArray.add(movieJsonObject);
             }
+            starJsonObject.add("movies", moviesArray);
+
             rs.close();
             statement.close();
 

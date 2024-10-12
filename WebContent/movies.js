@@ -47,9 +47,9 @@ function handleStarResult(resultData) {
         let starsArray = resultData[i]["movie_stars"];
         let starsHTML = "";
         for (let j = 0; j < starsArray.length; j++) {
-            // starsHTML += '<a href="single-star.html?id=' + starsArray[j]["star_id"] + '">'
-            //     + starsArray[j]["star_name"] + '</a>';
-            starsHTML += starsArray[j]["star_name"] + '</a>';
+            starsHTML += '<a href="single-star.html?id=' + starsArray[j]["star_id"] + '">'
+                + starsArray[j]["star_name"] + '</a>';
+            // starsHTML += starsArray[j]["star_name"] + '</a>';
             if (j < starsArray.length - 1) {
                 starsHTML += ", ";
             }
