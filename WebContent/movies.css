@@ -1,14 +1,18 @@
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100vw;
     margin: 0;
     font-family: Arial, sans-serif;
     position: relative;
     z-index: 1;
+    padding-bottom: 50px;
 }
 
 body::before {
@@ -36,12 +40,16 @@ body::before {
 }
 
 .nav {
-    width: 80%;
+    position: sticky;
+    top: 0;
+    background-color: #FEFCFC;
+    width: 100%;
     margin: 0 0 1rem;
-    padding: 0;
     list-style: none;
     display: flex;
     justify-content: flex-start;
+    z-index: 1000;
+    padding-left: 10%;
 }
 
 /*Navbar*/
@@ -64,6 +72,7 @@ body::before {
 .table {
     width: 80%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 #movie_table thead th {
@@ -127,4 +136,28 @@ body::before {
     width: 2rem;
     height: 2rem;
     margin-top: 0.85rem;
+}
+
+.star {
+    font-size: 16px;
+    display: inline-block;
+    -webkit-text-stroke: 1px #FB83AA;
+    color: transparent;
+    vertical-align: middle;
+}
+
+/*Footer*/
+.footer {
+    position: fixed;
+    bottom: 0;
+    background-color: #FEFCFC;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 0;
+    z-index: 1000;
+    font-size: 0.9rem;
+}
+
+.highlighted-name {
+    color: #FB83AA;
 }
