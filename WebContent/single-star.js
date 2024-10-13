@@ -47,8 +47,8 @@ function handleResult(resultData) {
     console.log(resultData)
 
     // append two html <p> created to the h3 body, which will refresh the page
-    starInfoElement.append("<p>Star Name: " + resultData["star_name"] + "</p>" +
-        "<p>Date Of Birth: " + resultData["star_dob"] + "</p>");
+    starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>" +
+        "<p>Date Of Birth: " + resultData[0]["star_dob"] + "</p>");
 
     console.log("handleResult: populating movie table from resultData");
 
@@ -57,7 +57,7 @@ function handleResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // Concatenate the html tags with resultData jsonObject to create table rows
-    let movies = resultData["movies"];
+    let movies = resultData[0]["movies"];
     for (let i = 0; i < movies.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";

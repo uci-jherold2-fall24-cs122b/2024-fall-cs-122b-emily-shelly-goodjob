@@ -48,6 +48,9 @@ public class SingleStarServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
+        // Log the id before executing the query
+        request.getServletContext().log("Executing query for starId: " + id);
+
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
@@ -73,12 +76,11 @@ public class SingleStarServlet extends HttpServlet {
 
             JsonArray jsonArray = new JsonArray();
 
-            JsonObject starJsonObject = new JsonObject();
-
             // Iterate through each row of rs
             while (rs.next()) {
-                // Add star information (only once)
-                String starName = rs.getString("name");
+                JsonObject starJsonObject = new JsonObject();
+
+                String starName = rs.getString("starName");
                 String starDob = rs.getString("starBirthYear");
 
                 starJsonObject.addProperty("star_name", starName);
@@ -100,6 +102,7 @@ public class SingleStarServlet extends HttpServlet {
                 }
 
                 starJsonObject.add("movies", moviesArray);
+                jsonArray.add(starJsonObject);
             }
 
             rs.close();
