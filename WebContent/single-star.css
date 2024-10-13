@@ -7,7 +7,7 @@ body {
     width: 100vw;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
 }
 
 .page-title-text {
@@ -77,4 +77,10 @@ body {
 .brand-name {
     font-size: large;
     font-weight: bold;
+}
+
+.logo-img {
+    width: 2rem;
+    height: 2rem;
+    margin-top: 0.85rem;
 }
