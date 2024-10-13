@@ -87,6 +87,15 @@ body {
     color: #93C6D9;
 }
 
+.page-title-text {
+    font-size: x-large;
+    width: 80%;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
 .info-text {
     font-size: large;
     width: 80%;
@@ -101,6 +110,11 @@ body {
     color: #FB83AA;
 }
 
-.nav-link.active:hover {
+.nav-link:hover {
     color: #93C6D9;
+}
+
+.brand-name {
+    font-size: large;
+    font-weight: bold;
 }
