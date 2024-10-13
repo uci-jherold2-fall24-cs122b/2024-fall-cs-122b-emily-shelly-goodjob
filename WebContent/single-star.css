@@ -14,12 +14,12 @@ body {
     font-size: x-large;
     font-style: italic;
     font-weight: bold;
+    margin-bottom: 0.5rem;
 }
 
 .page-subtitle-text {
     font-size: large;
     font-style: italic;
-    font-weight: bold;
 }
 
 .nav {
