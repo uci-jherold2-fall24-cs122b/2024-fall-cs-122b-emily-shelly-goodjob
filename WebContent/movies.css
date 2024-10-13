@@ -45,6 +45,7 @@ body {
 /*Table*/
 .table {
     width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #movie_table thead th {
@@ -58,4 +59,9 @@ body {
 
 #movie_table tbody a:hover {
     color: #93C6D9;
+}
+
+.brand-name {
+    font-size: large;
+    font-weight: bold;
 }
