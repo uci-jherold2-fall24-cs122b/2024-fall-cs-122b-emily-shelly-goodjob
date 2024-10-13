@@ -1,7 +1,13 @@
 .idea
 *.iml
 target/
+.project
 
 bin/
 *.war
 *.crt
+
+# Ignore database files
+*.db
+*.sqlite
+*.sql
