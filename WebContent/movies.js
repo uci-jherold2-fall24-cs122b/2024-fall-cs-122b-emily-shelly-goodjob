@@ -36,7 +36,7 @@ function handleStarResult(resultData) {
         rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
-        console.log(resultData);
+        // console.log(resultData);
         // display stars
         let starsArray = resultData[i]["movie_stars"];
         let starsHTML = "";
