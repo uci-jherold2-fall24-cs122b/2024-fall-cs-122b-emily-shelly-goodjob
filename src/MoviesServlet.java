@@ -40,13 +40,10 @@ public class MoviesServlet extends HttpServlet {
 
         response.setContentType("application/json"); // Response mime type
 
-        // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
 
-            // Declare our statement
             Statement statement = conn.createStatement();
 
             String query = "SELECT m.id, m.title, m.year, m.director, r.rating, " +
@@ -74,7 +71,6 @@ public class MoviesServlet extends HttpServlet {
                     "ORDER BY r.rating DESC " +
                     "LIMIT 20;";
 
-            // Perform the query
             ResultSet rs = statement.executeQuery(query);
 
             JsonArray jsonArray = new JsonArray();

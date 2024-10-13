@@ -10,32 +10,36 @@
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+  <link rel="stylesheet" type="text/css" href="movies.css" /> <!-- 确保CSS文件被引用 -->
   <title>Single Movie</title>
 </head>
 <body>
-<h1>Single Movie Page</h1>
+<ul class="nav">
+  <li class="nav-item">
+    <a class="nav-link disabled" aria-disabled="true">Fablix</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Top20</a>
+  </li>
+</ul>
 
-<!-- H3 body is left empty here, will be populated with the data retrieved with single-movie.js -->
-<!-- single-movie.js will find this html element by it's id "movie_info" -->
-<h3 id="movie_info"></h3>
-<table id=star_table class="table table-striped">
+<div class="page-title-text">Single Movie Details</div> <!-- 使用page-title-text类确保标题样式一致 -->
+<h3 id="movie_info" class="info-text"></h3> <!-- 使用info-text类为电影信息提供样式 -->
+<table id="star_table" class="table table-striped">
   <thead>
   <tr>
     <th>All Stars</th>
-    <th>
   </tr>
   </thead>
-
-  <!-- Table body is left empty here, will be populated with the data retrieved with single-star.js -->
-  <!-- single-star.js will find this html element by it's id "star_table_body" -->
-  <tbody id=star_table_body></tbody>
+  <tbody id="star_table_body"></tbody>
 </table>
 
 <!-- Load jQuery and Bootstrap JS -->
@@ -44,11 +48,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <!-- Load our own JS file -->
-<!-- The path is relative to single-star.html, since these two files are in the same directory -->
-<!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
-     otherwise the url is relative to the root path-->
 <script src="single-movie.js"></script>
 </body>
-
-
 </html>
