@@ -33,11 +33,7 @@ body {
     text-decoration: none !important;
 }
 
-.nav-link.active {
-    color: #FB83AA;
-}
-
-.nav-link:hover {
+.nav-link.active:hover {
     color: #93C6D9;
 }
 
