@@ -59,6 +59,8 @@ body::before {
     justify-content: center;
     gap: 10px;
     margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .search-form input[type="text"] {

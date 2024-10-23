@@ -60,6 +60,47 @@ body::before {
     justify-content: flex-start;
     z-index: 1000;
     padding-left: 10%;
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.search-form input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 150px;
+    outline: none;
+}
+
+.search-form button {
+    background-color: #FB83AA;
+    color: #FEECE9;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+}
+
+.search-form button:hover {
+    background-color: #93C6D9;
+}
+
+.search-form button:focus,
+.search-form input[type="text"]:focus {
+    outline: none;
 }
 
 /*Navbar*/
