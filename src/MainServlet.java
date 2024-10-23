@@ -30,52 +30,100 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String genre = request.getParameter("genre");
+        String titleInitial = request.getParameter("titleInitial");
+
+
         response.setContentType("application/json"); // Return JSON data
         PrintWriter out = response.getWriter();
         JSONArray jsonArray = new JSONArray();
 
         try {
-            // Retrieve search parameters
-            String title = request.getParameter("title");
-            String year = request.getParameter("year");
-            String director = request.getParameter("director");
-            String star = request.getParameter("star");
-
-            // Create the SQL query dynamically
-            String query = "SELECT movies.id, movies.title, movies.year, movies.director, " +
-                    "GROUP_CONCAT(DISTINCT stars.name SEPARATOR ', ') AS stars " +
-                    "FROM movies " +
-                    "LEFT JOIN stars_in_movies ON movies.id = stars_in_movies.movieId " +
-                    "LEFT JOIN stars ON stars.id = stars_in_movies.starId " +
-                    "WHERE 1=1";
-
-            if (title != null && !title.trim().isEmpty()) {
-                query += " AND movies.title LIKE ?";
-                title = "%" + title + "%";
-            }
-            if (year != null && !year.trim().isEmpty()) {
-                query += " AND movies.year = ?";
-            }
-            if (director != null && !director.trim().isEmpty()) {
-                query += " AND movies.director LIKE ?";
-                director = "%" + director + "%";
-            }
-            if (star != null && !star.trim().isEmpty()) {
-                query += " AND stars.name LIKE ?";
-                star = "%" + star + "%";
-            }
-
-            query += " GROUP BY movies.id, movies.title, movies.year, movies.director";
-
             // Create a new connection to the database
             Connection dbCon = dataSource.getConnection();
-            PreparedStatement statement = dbCon.prepareStatement(query);
+            PreparedStatement statement;
 
-            int index = 1;
-            if (title != null && !title.trim().isEmpty()) statement.setString(index++, title);
-            if (year != null && !year.trim().isEmpty()) statement.setInt(index++, Integer.parseInt(year));
-            if (director != null && !director.trim().isEmpty()) statement.setString(index++, director);
-            if (star != null && !star.trim().isEmpty()) statement.setString(index++, star);
+            // Determine query type (search by genre, title initial, or general search)
+            if (genre != null && !genre.trim().isEmpty()) {
+                // Search by Genre
+                String query = "SELECT movies.id, movies.title, movies.year, movies.director, " +
+                        "GROUP_CONCAT(DISTINCT stars.name SEPARATOR ', ') AS stars " +
+                        "FROM movies " +
+                        "LEFT JOIN stars_in_movies ON movies.id = stars_in_movies.movieId " +
+                        "LEFT JOIN stars ON stars.id = stars_in_movies.starId " +
+                        "LEFT JOIN genres_in_movies ON movies.id = genres_in_movies.movieId " +
+                        "LEFT JOIN genres ON genres.id = genres_in_movies.genreId " +
+                        "WHERE genres.name = ? " +
+                        "GROUP BY movies.id, movies.title, movies.year, movies.director";
+
+                statement = dbCon.prepareStatement(query);
+                statement.setString(1, genre);
+            } else if (titleInitial != null && !titleInitial.trim().isEmpty()) {
+                // Search by Title Initial
+                String query = "SELECT movies.id, movies.title, movies.year, movies.director, " +
+                        "GROUP_CONCAT(DISTINCT stars.name SEPARATOR ', ') AS stars " +
+                        "FROM movies " +
+                        "LEFT JOIN stars_in_movies ON movies.id = stars_in_movies.movieId " +
+                        "LEFT JOIN stars ON stars.id = stars_in_movies.starId " +
+                        "WHERE 1=1 ";
+
+                // Add condition for alphanumeric or special characters
+                if (titleInitial.equals("*")) {
+                    // Match titles starting with non-alphanumeric characters
+                    query += " AND movies.title REGEXP '^[^a-zA-Z0-9]'";
+                } else {
+                    // Match titles starting with a specific character
+                    query += " AND movies.title LIKE ?";
+                    titleInitial = titleInitial.toUpperCase() + "%"; // Case insensitive match
+                }
+
+                query += " GROUP BY movies.id, movies.title, movies.year, movies.director";
+                statement = dbCon.prepareStatement(query);
+
+                if (!titleInitial.equals("*")) {
+                    statement.setString(1, titleInitial);
+                }
+            } else {
+                // Retrieve search parameters
+                String title = request.getParameter("title");
+                String year = request.getParameter("year");
+                String director = request.getParameter("director");
+                String star = request.getParameter("star");
+
+                // Create the SQL query dynamically
+                String query = "SELECT movies.id, movies.title, movies.year, movies.director, " +
+                        "GROUP_CONCAT(DISTINCT stars.name SEPARATOR ', ') AS stars " +
+                        "FROM movies " +
+                        "LEFT JOIN stars_in_movies ON movies.id = stars_in_movies.movieId " +
+                        "LEFT JOIN stars ON stars.id = stars_in_movies.starId " +
+                        "WHERE 1=1";
+
+                if (title != null && !title.trim().isEmpty()) {
+                    query += " AND movies.title LIKE ?";
+                    title = "%" + title + "%";
+                }
+                if (year != null && !year.trim().isEmpty()) {
+                    query += " AND movies.year = ?";
+                }
+                if (director != null && !director.trim().isEmpty()) {
+                    query += " AND movies.director LIKE ?";
+                    director = "%" + director + "%";
+                }
+                if (star != null && !star.trim().isEmpty()) {
+                    query += " AND stars.name LIKE ?";
+                    star = "%" + star + "%";
+                }
+
+                query += " GROUP BY movies.id, movies.title, movies.year, movies.director";
+
+                statement = dbCon.prepareStatement(query);
+
+                int index = 1;
+                if (title != null && !title.trim().isEmpty()) statement.setString(index++, title);
+                if (year != null && !year.trim().isEmpty()) statement.setInt(index++, Integer.parseInt(year));
+                if (director != null && !director.trim().isEmpty()) statement.setString(index++, director);
+                if (star != null && !star.trim().isEmpty()) statement.setString(index++, star);
+            }
 
             ResultSet rs = statement.executeQuery();
 

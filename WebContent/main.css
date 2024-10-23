@@ -153,3 +153,42 @@ body::before {
 .highlighted-name {
     color: #FB83AA;
 }
+
+/*Browsing*/
+.browse-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.browse-outer-cnt {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 30px;
+    /*background-color: #FFFFFF;*/
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 5rem;
+}
+
+.browse-link {
+    color: #93C6D9;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: large;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.browse-link:hover {
+    color: #74B0C6;
+    text-decoration: underline;
+}
+
