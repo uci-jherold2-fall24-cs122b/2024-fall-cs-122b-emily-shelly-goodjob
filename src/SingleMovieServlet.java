@@ -55,15 +55,28 @@ public class SingleMovieServlet extends HttpServlet {
                     "m.year AS movieYear, " +
                     "m.director AS movieDirector, " +
                     "r.rating AS movieRating, " +
-                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres, " +
-                    "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name) AS stars, " +
-                    "GROUP_CONCAT(DISTINCT s.id ORDER BY s.name) AS starIds " +
+                    "(SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ', ') " +
+                    " FROM genres g " +
+                    " JOIN genres_in_movies gm ON gm.genreId = g.id " +
+                    " WHERE gm.movieId = m.id) AS genres, " +
+                    "(SELECT GROUP_CONCAT(star_info.star_name SEPARATOR ', ') " +
+                    " FROM ( " +
+                    "   SELECT s.name AS star_name " +
+                    "   FROM stars s " +
+                    "   JOIN stars_in_movies sim ON sim.starId = s.id " +
+                    "   WHERE sim.movieId = m.id " +
+                    "   ORDER BY (SELECT COUNT(*) FROM stars_in_movies WHERE starId = s.id) DESC, s.name " +
+                    ") AS star_info) AS stars, " +
+                    "(SELECT GROUP_CONCAT(star_info.star_id SEPARATOR ', ') " +
+                    " FROM ( " +
+                    "   SELECT s.id AS star_id " +
+                    "   FROM stars s " +
+                    "   JOIN stars_in_movies sim ON sim.starId = s.id " +
+                    "   WHERE sim.movieId = m.id " +
+                    "   ORDER BY (SELECT COUNT(*) FROM stars_in_movies WHERE starId = s.id) DESC, s.name " +
+                    ") AS star_info) AS starIds " +
                     "FROM movies m " +
-                    "JOIN ratings r ON r.movieId = m.id " +
-                    "LEFT JOIN genres_in_movies gim ON gim.movieId = m.id " +
-                    "LEFT JOIN genres g ON g.id = gim.genreId " +
-                    "LEFT JOIN stars_in_movies sim ON sim.movieId = m.id " +
-                    "LEFT JOIN stars s ON s.id = sim.starId " +
+                    "LEFT JOIN ratings r ON r.movieId = m.id " +
                     "WHERE m.id = ? " +
                     "GROUP BY m.id";
 
@@ -81,30 +94,38 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Iterate through each row of rs
             if (rs.next()) {
-                String movieTitle = rs.getString("movieTitle");
-                String movieYear = rs.getString("movieYear");
-                String movieDirector = rs.getString("movieDirector");
-                String movieRating = rs.getString("movieRating");
-                String movieGenres = rs.getString("genres");
-                String movieStars = rs.getString("stars");
-                String starIds = rs.getString("starIds");
-
-                // Add movie
-                jsonObject.addProperty("movie_title", movieTitle);
-                jsonObject.addProperty("movie_year", movieYear);
-                jsonObject.addProperty("movie_director", movieDirector);
-                jsonObject.addProperty("movie_rating", movieRating);
-                jsonObject.addProperty("movie_genres", movieGenres);
+                jsonObject.addProperty("movie_title", rs.getString("movieTitle"));
+                jsonObject.addProperty("movie_year", rs.getString("movieYear"));
+                jsonObject.addProperty("movie_director", rs.getString("movieDirector"));
+                jsonObject.addProperty("movie_rating", rs.getString("movieRating"));
 
                 // Add stars
                 JsonArray starsArray = new JsonArray();
-                String[] starNames = movieStars.split(",");
-                String[] star_Ids = starIds.split(",");
+                String[] starNames = rs.getString("stars").split(", ");
+                String[] starIds = rs.getString("starIds").split(", ");
                 for (int i = 0; i < starNames.length; i++) {
                     JsonObject star = new JsonObject();
-                    star.addProperty("star_id", star_Ids[i]);
+                    star.addProperty("star_id", starIds[i]);
                     star.addProperty("star_name", starNames[i]);
                     starsArray.add(star);
+                }
+
+                // Convert genres to hyperlinked format
+                String genres = rs.getString("genres");
+                if (genres != null) {
+                    String[] genreList = genres.split(", ");
+                    StringBuilder genreLinks = new StringBuilder();
+                    for (String genre : genreList) {
+                        genreLinks.append("<a href='result.html?genre=").append(genre).append("' class='page-subtitle-text-hyperlink'>")
+                                .append(genre).append("</a>, ");
+                    }
+                    // Remove the trailing comma and space
+                    if (genreLinks.length() > 2) {
+                        genreLinks.setLength(genreLinks.length() - 2);
+                    }
+                    jsonObject.addProperty("movie_genres", genreLinks.toString());
+                } else {
+                    jsonObject.addProperty("movie_genres", "");
                 }
 
                 jsonObject.add("movie_stars", starsArray);
