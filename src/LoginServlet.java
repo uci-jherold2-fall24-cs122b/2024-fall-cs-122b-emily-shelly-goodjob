@@ -14,10 +14,24 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        boolean usernameExists = true;
+        boolean passwordCorrect = true;
+
         /* This example only allows username/password to be test/test
         /  in the real project, you should talk to the database to verify username/password
         */
         JsonObject responseJsonObject = new JsonObject();
+        if (username == null) {
+            responseJsonObject.addProperty("status", "fail");
+            responseJsonObject.addProperty("message", "Account not found");
+        } else if (usernameExists && passwordCorrect) {
+            responseJsonObject.addProperty("status", "fail");
+            responseJsonObject.addProperty("message", "Password Incorrect");
+        } else {
+            request.getSession().setAttribute("user", username);
+            responseJsonObject.addProperty("status", "success");
+            responseJsonObject.addProperty("message", "success");
+        }
         if (username.equals("anteater") && password.equals("123456")) {
             // Login success:
 
