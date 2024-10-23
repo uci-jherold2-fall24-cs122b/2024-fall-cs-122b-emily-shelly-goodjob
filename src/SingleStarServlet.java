@@ -56,8 +56,8 @@ public class SingleStarServlet extends HttpServlet {
             // Get a connection from dataSource
             String query = "SELECT s.name AS starName, " +
                     "IFNULL(s.birthYear, 'N/A') AS starBirthYear, " +
-                    "GROUP_CONCAT(DISTINCT m.title ORDER BY m.title) AS movies, " +
-                    "GROUP_CONCAT(DISTINCT m.id ORDER BY m.title) AS movieIds " +
+                    "GROUP_CONCAT(DISTINCT m.title ORDER BY m.year DESC, m.title SEPARATOR ', ') AS movies, " +
+                    "GROUP_CONCAT(DISTINCT m.id ORDER BY m.year DESC, m.title SEPARATOR ', ') AS movieIds " +
                     "FROM stars s " +
                     "JOIN stars_in_movies sim ON sim.starId = s.id " +
                     "JOIN movies m ON m.id = sim.movieId " +
@@ -92,12 +92,12 @@ public class SingleStarServlet extends HttpServlet {
 
                 // Add movies
                 JsonArray moviesArray = new JsonArray();
-                String[] movie_Titles = movieTitles.split(",");
-                String[] movie_Ids = movieIds.split(",");
-                for (int i = 0; i < movie_Titles.length; i++) {
+                String[] movieTitlesArray = movieTitles.split(", ");
+                String[] movieIdsArray = movieIds.split(", ");
+                for (int i = 0; i < movieTitlesArray.length; i++) {
                     JsonObject movie = new JsonObject();
-                    movie.addProperty("movie_id", movie_Ids[i]);
-                    movie.addProperty("movie_title", movie_Titles[i]);
+                    movie.addProperty("movie_id", movieIdsArray[i]);
+                    movie.addProperty("movie_title", movieTitlesArray[i]);
                     moviesArray.add(movie);
                 }
 
