@@ -12,7 +12,7 @@ body {
     font-family: Arial, sans-serif;
     position: relative;
     z-index: 1;
-    padding-bottom: 50px;
+    padding-bottom: 70px;
 }
 
 body::before {
@@ -242,7 +242,7 @@ body::before {
     align-items: center;
 }
 
-.update-btn {
+.update-btn,.prev-btn, .next-btn {
     background-color: #FB83AA;
     color: #FEECE9;
     border: none;
@@ -254,10 +254,24 @@ body::before {
     outline: none;
 }
 
-.update-btn:hover {
+.prev-btn, .next-btn {
+    width: 75px;
+    height: 35px;
+}
+
+.update-btn:hover, .prev-btn:hover, .next-btn:hover {
     background-color: #93C6D9;
 }
 
-.update-btn:focus {
+.update-btn:focus, .prev-btn:focus, .next-btn:focus {
     outline: none;
+}
+
+.prev-next-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 5px;
 }

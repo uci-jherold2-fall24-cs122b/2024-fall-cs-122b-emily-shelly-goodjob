@@ -50,7 +50,7 @@
     <label for="movie-per-page">Movies per Page:</label>
     <select id="movie-per-page">
       <option value="10">10</option>
-      <option value="25">25</option>
+      <option value="25" selected>25</option>
       <option value="50">50</option>
       <option value="100">100</option>
     </select>
@@ -64,7 +64,7 @@
       <option value="titleAscRatingAsc">Title ASC, Rating ASC</option>
       <option value="titleDescRatingDesc">Title DESC, Rating DESC</option>
       <option value="titleDescRatingAsc">Title DESC, Rating ASC</option>
-      <option value="ratingDescTitleAsc">Rating DESC, Title ASC</option>
+      <option value="ratingDescTitleAsc" selected>Rating DESC, Title ASC</option>
       <option value="ratingDescTitleDesc">Rating DESC, Title DESC</option>
       <option value="ratingAscTitleAsc">Rating ASC, Title ASC</option>
       <option value="ratingAscTitleDesc">Rating ASC, Title DESC</option>
@@ -94,6 +94,10 @@
   <!-- Table body is left empty here, will be populated with the data retrieved with result.js -->
   <tbody id="result_table_body"></tbody>
 </table>
+<div class="prev-next-container">
+  <button class="prev-btn" id="prev-btn">Prev</button>
+  <button class="next-btn" id="next-btn">Next</button>
+</div>
 
 <footer class="footer">
   <p>2024 <span class="highlighted-name">Emily Wang</span> & <span class="highlighted-name">Yiwen Wu</span>. All rights reserved.</p>
