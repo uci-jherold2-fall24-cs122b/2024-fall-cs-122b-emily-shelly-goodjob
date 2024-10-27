@@ -18,7 +18,7 @@ function handleSearchResult(resultData) {
 
     // Populate the result table
     let resultTableBodyElement = jQuery("#result_table_body");
-    resultTableBodyElement.html("");
+    resultTableBodyElement.html(""); // Clear previous results
 
     for (let i = 0; i < resultData.length; i++) {
         let rowHTML = "";
@@ -48,12 +48,16 @@ function cacheSearchResults(resultData, searchParams) {
 function loadCachedResults() {
     const cachedResults = sessionStorage.getItem("cachedResults");
     const searchParams = JSON.parse(sessionStorage.getItem("searchParams"));
+    const navigateToResults = sessionStorage.getItem("navigateToResults");
 
-    if (cachedResults && searchParams) {
-        handleSearchResult(JSON.parse(cachedResults)); // Display cached results
+    if (navigateToResults && cachedResults && searchParams) {
+        console.log("Displaying cached results from session storage");
+        handleSearchResult(JSON.parse(cachedResults));
+        sessionStorage.removeItem("navigateToResults"); // clear the navigation flag
     } else {
         // Fetch default or initial results if no cache exists
-        fetchResults(0, 25, 'ratingDescTitleAsc');
+        console.log("Fetching new results or default results");
+        fetchResults(0, 25, sortBy);
     }
 }
 
@@ -94,9 +98,6 @@ function fetchResults(currentPage, moviesPerPage, sortBy) {
         }
     });
 }
-
-// Initial results on page
-fetchResults(currentPage, moviesPerPage, sortBy);
 
 // Dropdowns
 document.getElementById('updateButton').addEventListener('click', function () {

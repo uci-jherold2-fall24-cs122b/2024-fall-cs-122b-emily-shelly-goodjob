@@ -38,6 +38,7 @@ function fetchTitleInitials() {
 
 function goBackToResults() {
     // Navigate to the Movie List page, which loads cached data on load
+    sessionStorage.setItem("navigateToResults", "true"); // store whether click on hyperlink
     window.location.href = "result.html";
 }
 

@@ -71,6 +71,12 @@ function handleResult(resultData) {
     }
 }
 
+function goBackToResults() {
+    // Navigate to the Movie List page, which loads cached data on load
+    sessionStorage.setItem("navigateToResults", "true"); // store whether click on hyperlink
+    window.location.href = "result.html";
+}
+
 /**
  * Once this .js is loaded, following scripts will be executed by the browser\
  */

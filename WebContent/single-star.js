@@ -31,6 +31,12 @@ function getParameterByName(target) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+function goBackToResults() {
+    // Navigate to the Movie List page, which loads cached data on load
+    sessionStorage.setItem("navigateToResults", "true"); // store whether click on hyperlink
+    window.location.href = "result.html";
+}
+
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
