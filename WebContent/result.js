@@ -31,10 +31,45 @@ function handleSearchResult(resultData) {
         rowHTML += "<td>" + resultData[i]["movie_rating"] + "</td>";
         rowHTML += "</tr>";
 
-        // Log the generated rowHTML to see if it's being created correctly
-        // console.log(rowHTML);
-
         resultTableBodyElement.append(rowHTML);
+    }
+    updatePaginationButtons(resultData.length);
+}
+
+function updatePaginationButtons(totalResults) {
+    const prevButton = document.getElementById('prev-btn');
+    const nextButton = document.getElementById('next-btn');
+
+    // Disable prev button on the first page
+    if (currentPage === 0) {
+        prevButton.classList.remove("active");
+        prevButton.classList.remove("active");
+        prevButton.classList.add("disabled");
+        prevButton.disabled = true;
+    } else {
+        prevButton.classList.remove("disabled");
+        prevButton.classList.add("active");
+        prevButton.classList.add("hover-enabled");
+        prevButton.disabled = false;
+    }
+
+    // const remainingResults = totalResults - (currentPage * moviesPerPage);
+    const isLastPage = moviesPerPage > totalResults;
+
+    // Disable next button if on the last page or fewer than moviesPerPage results are returned
+    if (isLastPage) {
+        console.log("total result: ", totalResults, "isLastPge: ", isLastPage, "currentPage: ", currentPage);
+        nextButton.classList.remove("active");
+        nextButton.classList.remove("hover-enabled");
+        nextButton.classList.add("disabled");
+        nextButton.disabled = true;
+        console.log(nextButton.classList);
+    } else {
+        nextButton.classList.remove("disabled");
+        nextButton.classList.add("active");
+        nextButton.classList.add("hover-enabled");
+        console.log("1");
+        nextButton.disabled = false;
     }
 }
 
@@ -95,11 +130,18 @@ function fetchResults(currentPage, moviesPerPage, sortBy) {
         method: "GET",
         url: requestUrl,
         success: (resultData) => {
+            // Check if no data is returned on this page
+            if (resultData.length === 0 && currentPage > 0) {
+                // Move back to the previous page if no data found
+                currentPage -= 1;
+                updatePaginationButtons(0);
+                return;
+            }
+
             handleSearchResult(resultData);
-            cacheSearchResults(resultData, {currentPage, moviesPerPage, sortBy, genre, titleInitial, title, year, director, star});
+            cacheSearchResults(resultData, { currentPage, moviesPerPage, sortBy, genre, titleInitial, title, year, director, star });
         },
         error: (jqXHR, textStatus, errorThrown) => {
-            // Log the error for debugging
             console.error("AJAX request failed:", textStatus, errorThrown);
         }
     });
@@ -129,7 +171,7 @@ document.getElementById('prev-btn').addEventListener('click', function () {
     }
 });
 
-// Next button
+// Next buttons
 document.getElementById('next-btn').addEventListener('click', function () {
     currentPage += 1
     fetchResults(currentPage, moviesPerPage, sortBy);

@@ -259,12 +259,23 @@ body::before {
     height: 35px;
 }
 
-.update-btn:hover, .prev-btn:hover, .next-btn:hover {
+.update-btn:hover {
+    background-color: #93C6D9;
+}
+
+.prev-btn.hover-enabled:hover,
+.next-btn.hover-enabled:hover {
     background-color: #93C6D9;
 }
 
 .update-btn:focus, .prev-btn:focus, .next-btn:focus {
     outline: none;
+}
+
+.prev-btn.disabled,
+.next-btn.disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 .prev-next-container {
