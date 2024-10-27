@@ -13,6 +13,27 @@
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
+
+function addToCart(movieId) {
+    console.log("Adding to cart: " + movieId);
+    jQuery.ajax({
+        url: "/api/addToCart",
+        method: "POST",
+        data: {
+            movieId: movieId,
+            quantity: 1
+        },
+        success: function(resultData) {
+            console.log("Success: " + resultData);
+            alert("Movie added to cart!");
+        },
+        error: function(error) {
+            console.log("Error adding to cart: " + error);
+            alert("Error adding to cart.");
+        }
+    });
+}
+
 function handleStarResult(resultData) {
     console.log("handleStarResult: populating star table from resultData");
 
@@ -36,6 +57,7 @@ function handleStarResult(resultData) {
         rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
+        rowHTML += `<td><button onclick="addToCart('${resultData[i]['movie_id']}')">Add to Cart</button></td>`;
         // console.log(resultData);
         // display stars
         let starsArray = resultData[i]["movie_stars"];
