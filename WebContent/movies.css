@@ -286,3 +286,32 @@ body::before {
     gap: 30px;
     margin-top: 5px;
 }
+
+/*Checout Page*/
+.proceed-to-pay-btn {
+    background-color: #FB83AA;
+    color: #FEECE9;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+}
+
+.proceed-to-pay-btn:hover {
+    background-color: #93C6D9;
+}
+
+.proceed-to-pay-btn:focus {
+    outline: none;
+}
+
+.checkout-bottom-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
