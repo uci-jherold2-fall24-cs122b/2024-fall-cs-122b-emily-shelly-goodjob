@@ -38,6 +38,30 @@ function handleSearchResult(resultData) {
     }
 }
 
+function cacheSearchResults(resultData, searchParams) {
+    // Cache search results and parameters
+    sessionStorage.setItem("cachedResults", JSON.stringify(resultData));
+    sessionStorage.setItem("searchParams", JSON.stringify(searchParams));
+}
+
+// Function to load cached results
+function loadCachedResults() {
+    const cachedResults = sessionStorage.getItem("cachedResults");
+    const searchParams = JSON.parse(sessionStorage.getItem("searchParams"));
+
+    if (cachedResults && searchParams) {
+        handleSearchResult(JSON.parse(cachedResults)); // Display cached results
+    } else {
+        // Fetch default or initial results if no cache exists
+        fetchResults(0, 25, 'ratingDescTitleAsc');
+    }
+}
+
+function clearCache() {
+    sessionStorage.removeItem("cachedResults");
+    sessionStorage.removeItem("searchParams");
+}
+
 function fetchResults(currentPage, moviesPerPage, sortBy) {
     // Send an AJAX request to the backend API to get the search results
     const urlParams = new URLSearchParams(window.location.search);
@@ -60,7 +84,10 @@ function fetchResults(currentPage, moviesPerPage, sortBy) {
         dataType: "json",
         method: "GET",
         url: requestUrl,
-        success: (resultData) => handleSearchResult(resultData),
+        success: (resultData) => {
+            handleSearchResult(resultData);
+            cacheSearchResults(resultData, {currentPage, moviesPerPage, sortBy, genre, titleInitial, title, year, director, star});
+        },
         error: (jqXHR, textStatus, errorThrown) => {
             // Log the error for debugging
             console.error("AJAX request failed:", textStatus, errorThrown);
@@ -73,6 +100,7 @@ fetchResults(currentPage, moviesPerPage, sortBy);
 
 // Dropdowns
 document.getElementById('updateButton').addEventListener('click', function () {
+    clearCache();
     moviesPerPage = document.getElementById('movie-per-page').value;
     sortBy = document.getElementById('sortBy').value;
     currentPage = 0;
@@ -94,3 +122,7 @@ document.getElementById('next-btn').addEventListener('click', function () {
     fetchResults(currentPage, moviesPerPage, sortBy);
 });
 
+// Load cached data
+jQuery(document).ready(() => {
+    loadCachedResults();
+});

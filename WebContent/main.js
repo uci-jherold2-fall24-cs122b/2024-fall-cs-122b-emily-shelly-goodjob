@@ -36,6 +36,11 @@ function fetchTitleInitials() {
     });
 }
 
+function goBackToResults() {
+    // Navigate to the Movie List page, which loads cached data on load
+    window.location.href = "result.html";
+}
+
 // Execute fetching on page load
 jQuery(document).ready(function () {
     fetchGenres();
