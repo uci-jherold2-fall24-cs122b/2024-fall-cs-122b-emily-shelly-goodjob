@@ -197,10 +197,10 @@ public class MainServlet extends HttpServlet {
                 statement = dbCon.prepareStatement(query);
 
                 int index = 1;
-                if (title != null && !title.trim().isEmpty()) statement.setString(index++, title);
+                if (title != null && !title.trim().isEmpty()) statement.setString(index++, "%" + title + "%");
                 if (year != null && !year.trim().isEmpty()) statement.setInt(index++, Integer.parseInt(year));
-                if (director != null && !director.trim().isEmpty()) statement.setString(index++, director);
-                if (star != null && !star.trim().isEmpty()) statement.setString(index++, star);
+                if (director != null && !director.trim().isEmpty()) statement.setString(index++, "%" + director + "%");
+                if (star != null && !star.trim().isEmpty()) statement.setString(index++, "%" + star + "%");
                 statement.setInt(index++, moviesPerPage);
                 statement.setInt(index, page * moviesPerPage);
             }

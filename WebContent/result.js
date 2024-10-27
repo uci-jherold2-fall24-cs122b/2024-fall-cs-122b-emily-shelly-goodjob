@@ -43,14 +43,18 @@ function fetchResults(currentPage, moviesPerPage, sortBy) {
     const urlParams = new URLSearchParams(window.location.search);
     const genre = urlParams.get("genre");
     const titleInitial = urlParams.get("titleInitial");
+    const title = urlParams.get("title");
+    const year = urlParams.get("year");
+    const director = urlParams.get("director");
+    const star = urlParams.get("star");
 
     let requestUrl = `/cs122b_project1_api_example_war/search?page=${currentPage}&moviesPerPage=${moviesPerPage}&sortBy=${sortBy}`;
-    if (genre) {
-        requestUrl += `&genre=${encodeURIComponent(genre)}`;
-    }
-    if (titleInitial) {
-        requestUrl += `&titleInitial=${encodeURIComponent(titleInitial)}`;
-    }
+    if (genre) requestUrl += `&genre=${encodeURIComponent(genre)}`;
+    if (titleInitial) requestUrl += `&titleInitial=${encodeURIComponent(titleInitial)}`;
+    if (title) requestUrl += `&title=${encodeURIComponent(title)}`;
+    if (year) requestUrl += `&year=${encodeURIComponent(year)}`;
+    if (director) requestUrl += `&director=${encodeURIComponent(director)}`;
+    if (star) requestUrl += `&star=${encodeURIComponent(star)}`;
 
     jQuery.ajax({
         dataType: "json",
