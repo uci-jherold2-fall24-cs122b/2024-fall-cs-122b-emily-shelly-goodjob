@@ -39,6 +39,11 @@ body::before {
     font-weight: bold;
 }
 
+.page-subtitle-text {
+    font-size: large;
+    font-style: italic;
+}
+
 .nav {
     position: sticky;
     top: 0;
@@ -300,6 +305,12 @@ body::before {
     outline: none;
 }
 
+.proceed-to-pay-btn {
+    width: 25rem;
+    height: 2.5rem;
+    border-radius: 10px;
+}
+
 .delete-btn {
     font-size: 14px;
 }
@@ -338,6 +349,8 @@ body::before {
     outline: none;
     width: 28px;
     justify-content: center;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .quantity-btn:hover {
@@ -346,4 +359,44 @@ body::before {
 
 .quantity-btn:focus {
     outline: none;
+}
+
+/*Payment Page*/
+.top-part-payment {
+    display: flex;
+    width: 80%;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+
+.page-title-text-payment {
+    font-size: x-large;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.payment-bottom-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
+.total-price {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+
+.form-control {
+    width: 25rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: .37rem;
 }

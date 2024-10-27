@@ -41,6 +41,7 @@ function displayCartItems(cartItems) {
 
     // Update total amount in the footer
     $("#total-amount").text(`$${totalAmount.toFixed(2)}`);
+    sessionStorage.setItem("totalAmount", totalAmount.toFixed(2));
 }
 
 function goBackToResults() {
