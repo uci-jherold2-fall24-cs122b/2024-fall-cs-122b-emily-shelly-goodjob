@@ -1,10 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="movies.css" />
+    <title>Confirmation</title>
 </head>
 <body>
+<ul class="nav">
+    <div><img class="logo-img" src="Fablix.png" alt="Fablix logo" /></div>
+    <li class="nav-item">
+        <a class="nav-link disabled brand-name" aria-disabled="true">Fablix</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="main.html">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="movies.html">Top20</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled"  id="back-to-results" onclick="goBackToResults()" aria-current="page" href="#">Result</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="ShoppingCart.html">Checkout</a>
+    </li>
 
+    <!--Search Form-->
+    <li class="nav-item">
+        <form class="search-form" action="result.html" method="GET">
+            <input type="text" name="title" placeholder="Title">
+            <input type="text" name="year" placeholder="Year">
+            <input type="text" name="director" placeholder="Director">
+            <input type="text" name="star" placeholder="Star's Name">
+            <button type="submit">Search</button>
+        </form>
+    </li>
+</ul>
+
+<div class="top-part">
+    <div class="page-title-text">Confirmation</div>
+</div>
+
+<table id="confirm_table" class="table table-striped">
+    <!-- Create a table header -->
+    <thead>
+    <tr>
+        <!-- Titles of each column-->
+        <th>Sale ID</th>
+        <th>Title</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <!-- Table body is left empty here, will be populated with the data retrieved with result.js -->
+    <tbody id="confirm_table_body"></tbody>
+</table>
+
+<footer class="footer">
+    <p>2024 <span class="highlighted-name">Emily Wang</span> & <span class="highlighted-name">Yiwen Wu</span>. All rights reserved.</p>
+</footer>
+
+<!-- Load jQuery and Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- Load our own JS file -->
+<script src="confirmation.js"></script>
 </body>
 </html>

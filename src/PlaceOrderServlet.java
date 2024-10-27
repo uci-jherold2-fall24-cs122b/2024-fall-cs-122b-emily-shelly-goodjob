@@ -1,4 +1,6 @@
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,8 +10,11 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 @WebServlet(name = "PlaceOrderServlet", urlPatterns = "/api/placeOrder")
 public class PlaceOrderServlet extends HttpServlet {
@@ -82,23 +87,107 @@ public class PlaceOrderServlet extends HttpServlet {
                         saleStmt.setInt(4, quantity);
                         saleStmt.executeUpdate();
                     }
-                    conn.commit(); // Commit transaction
+                    conn.commit();
                 }
 
                 // removes movies from the shopping cart after successful purchase
-                String deleteCartQuery = "DELETE FROM shopping_cart WHERE customer_id = ?";
-                try (PreparedStatement deleteStmt = conn.prepareStatement(deleteCartQuery)) {
-                    deleteStmt.setInt(1, customerId);
-                    deleteStmt.executeUpdate();
+                String clearCartQuery = "DELETE FROM shopping_cart WHERE customer_id = ?";
+                try (PreparedStatement clearCartStmt = conn.prepareStatement(clearCartQuery)) {
+                    clearCartStmt.setInt(1, customerId);
+                    clearCartStmt.executeUpdate();
                 }
             }
 
             // response success to frontend
             jsonResponse.addProperty("status", "success");
             jsonResponse.addProperty("message", "Order placed successfully.");
+
+            JSONArray salesArray = new JSONArray();
+            String salesQuery = "SELECT s.id AS sale_id, m.title, sc.quantity, m.price " +
+                    "FROM sales s " +
+                    "JOIN movies m ON s.movieId = m.id " +
+                    "JOIN shopping_cart sc ON sc.movie_id = s.movieId " +
+                    "WHERE s.customerId = ?";
+
+            try (PreparedStatement salesStmt = conn.prepareStatement(salesQuery)) {
+                salesStmt.setInt(1, customerId);
+                ResultSet salesResult = salesStmt.executeQuery();
+
+                while (salesResult.next()) {
+                    JSONObject sale = new JSONObject();
+                    sale.put("saleId", salesResult.getInt("sale_id"));
+                    sale.put("title", salesResult.getString("title"));
+                    sale.put("quantity", salesResult.getInt("quantity"));
+                    sale.put("price", salesResult.getBigDecimal("price"));
+                    sale.put("total", salesResult.getBigDecimal("price")
+                            .multiply(BigDecimal.valueOf(salesResult.getInt("quantity"))));
+
+                    salesArray.put(sale);
+                }
+            }
+
+            // convert JSONArray to JsonElement and add to jsonResponse
+            String salesArrayString = salesArray.toString();
+            JsonElement salesJsonElement = JsonParser.parseString(salesArrayString);
+            jsonResponse.add("sales", salesJsonElement);
+
         } catch (SQLException e) {
             jsonResponse.addProperty("status", "fail");
             jsonResponse.addProperty("message", "Error processing transaction: " + e.getMessage());
+            e.printStackTrace();
+        }
+        response.getWriter().write(jsonResponse.toString());
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        JsonObject jsonResponse = new JsonObject();
+
+        HttpSession session = request.getSession();
+        Integer customerId = (Integer) session.getAttribute("user_id");
+
+        if (customerId == null) {
+            jsonResponse.addProperty("status", "fail");
+            jsonResponse.addProperty("message", "User not logged in.");
+            response.getWriter().write(jsonResponse.toString());
+            return;
+        }
+
+        try (Connection conn = dataSource.getConnection()) {
+            JSONArray salesArray = new JSONArray();
+            String salesQuery = "SELECT s.id AS sale_id, m.title, sc.quantity, m.price " +
+                    "FROM sales s " +
+                    "JOIN movies m ON s.movieId = m.id " +
+                    "JOIN shopping_cart sc ON sc.movie_id = s.movieId " +
+                    "WHERE s.customerId = ?";
+
+            try (PreparedStatement salesStmt = conn.prepareStatement(salesQuery)) {
+                salesStmt.setInt(1, customerId);
+                ResultSet salesResult = salesStmt.executeQuery();
+
+                while (salesResult.next()) {
+                    JSONObject sale = new JSONObject();
+                    sale.put("saleId", salesResult.getInt("sale_id"));
+                    sale.put("title", salesResult.getString("title"));
+                    sale.put("quantity", salesResult.getInt("quantity"));
+                    sale.put("price", salesResult.getBigDecimal("price"));
+                    sale.put("total", salesResult.getBigDecimal("price")
+                            .multiply(BigDecimal.valueOf(salesResult.getInt("quantity"))));
+
+                    salesArray.put(sale);
+                }
+            }
+
+            // Convert JSONArray to JsonElement and add to jsonResponse
+            String salesArrayString = salesArray.toString();
+            JsonElement salesJsonElement = JsonParser.parseString(salesArrayString);
+            jsonResponse.add("sales", salesJsonElement);
+            jsonResponse.addProperty("status", "success");
+
+        } catch (SQLException e) {
+            jsonResponse.addProperty("status", "fail");
+            jsonResponse.addProperty("message", "Error retrieving sales data: " + e.getMessage());
             e.printStackTrace();
         }
         response.getWriter().write(jsonResponse.toString());
