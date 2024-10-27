@@ -51,6 +51,12 @@ function loadCachedResults() {
     const navigateToResults = sessionStorage.getItem("navigateToResults");
 
     if (navigateToResults && cachedResults && searchParams) {
+        document.getElementById('movie-per-page').value = searchParams.moviesPerPage;
+        document.getElementById('sortBy').value = searchParams.sortBy;
+        currentPage = searchParams.currentPage;
+        moviesPerPage = searchParams.moviesPerPage;
+        sortBy = searchParams.sortBy;
+
         console.log("Displaying cached results from session storage");
         handleSearchResult(JSON.parse(cachedResults));
         sessionStorage.removeItem("navigateToResults"); // clear the navigation flag
@@ -97,6 +103,12 @@ function fetchResults(currentPage, moviesPerPage, sortBy) {
             console.error("AJAX request failed:", textStatus, errorThrown);
         }
     });
+}
+
+function goBackToResults() {
+    // Navigate to the Movie List page, which loads cached data on load
+    sessionStorage.setItem("navigateToResults", "true"); // store whether click on hyperlink
+    window.location.href = "result.html";
 }
 
 // Dropdowns
