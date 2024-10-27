@@ -288,7 +288,7 @@ body::before {
 }
 
 /*Checout Page*/
-.proceed-to-pay-btn {
+.proceed-to-pay-btn, .delete-btn {
     background-color: #FB83AA;
     color: #FEECE9;
     border: none;
@@ -300,11 +300,15 @@ body::before {
     outline: none;
 }
 
-.proceed-to-pay-btn:hover {
+.delete-btn {
+    font-size: 14px;
+}
+
+.proceed-to-pay-btn:hover, .delete-btn:hover {
     background-color: #93C6D9;
 }
 
-.proceed-to-pay-btn:focus {
+.proceed-to-pay-btn:focus, .delete-btn:hover {
     outline: none;
 }
 
@@ -314,4 +318,32 @@ body::before {
     justify-content: space-between;
     align-items: center;
     width: 80%;
+}
+
+.total-container {
+    display: flex;
+    flex-direction: row;
+    margin-right: 7%;
+}
+
+.quantity-btn {
+    background-color: #FB83AA;
+    color: #FEECE9;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+    width: 28px;
+    justify-content: center;
+}
+
+.quantity-btn:hover {
+    background-color: #93C6D9;
+}
+
+.quantity-btn:focus {
+    outline: none;
 }
