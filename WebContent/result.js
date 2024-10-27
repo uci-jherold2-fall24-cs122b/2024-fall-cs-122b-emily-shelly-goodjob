@@ -14,7 +14,7 @@ function addToCart(movieId) {
     console.log("Adding to cart: " + movieId);
 
     jQuery.ajax({
-        url: "/api/addToCart",
+        url: "api/addToCart",
         method: "POST",
         data: {
             movieId: movieId,
@@ -32,10 +32,7 @@ function addToCart(movieId) {
     });
 }
 
-
 function handleSearchResult(resultData) {
-    console.log("handleSearchResult: populating result table from resultData");
-
     // Log the entire resultData to check its structure
     console.log(resultData);
 
@@ -52,7 +49,7 @@ function handleSearchResult(resultData) {
         rowHTML += "<td>" + resultData[i]["movie_genres"] + "</td>";
         rowHTML += "<td>" + resultData[i]["movie_stars"] + "</td>";
         rowHTML += "<td>" + resultData[i]["movie_rating"] + "</td>";
-        rowHTML += `<td><button onclick="addToCart('${resultData[i]['movie_id']}')">Add to Cart</button></td>`;
+        rowHTML += `<td><button class="update-btn" onclick="addToCart('${resultData[i]['movie_id']}')">Add</button></td>`;
         rowHTML += "</tr>";
 
         resultTableBodyElement.append(rowHTML);
@@ -82,17 +79,16 @@ function updatePaginationButtons(totalResults) {
 
     // Disable next button if on the last page or fewer than moviesPerPage results are returned
     if (isLastPage) {
-        console.log("total result: ", totalResults, "isLastPge: ", isLastPage, "currentPage: ", currentPage);
+        // console.log("total result: ", totalResults, "isLastPge: ", isLastPage, "currentPage: ", currentPage);
         nextButton.classList.remove("active");
         nextButton.classList.remove("hover-enabled");
         nextButton.classList.add("disabled");
         nextButton.disabled = true;
-        console.log(nextButton.classList);
+        // console.log(nextButton.classList);
     } else {
         nextButton.classList.remove("disabled");
         nextButton.classList.add("active");
         nextButton.classList.add("hover-enabled");
-        console.log("1");
         nextButton.disabled = false;
     }
 }
@@ -116,12 +112,10 @@ function loadCachedResults() {
         moviesPerPage = searchParams.moviesPerPage;
         sortBy = searchParams.sortBy;
 
-        console.log("Displaying cached results from session storage");
         handleSearchResult(JSON.parse(cachedResults));
         sessionStorage.removeItem("navigateToResults"); // clear the navigation flag
     } else {
         // Fetch default or initial results if no cache exists
-        console.log("Fetching new results or default results");
         fetchResults(0, 25, sortBy);
     }
 }

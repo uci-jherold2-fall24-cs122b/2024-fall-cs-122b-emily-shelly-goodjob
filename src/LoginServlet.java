@@ -33,10 +33,15 @@ public class LoginServlet extends HttpServlet {
                     responseJsonObject.addProperty("status", "fail");
                     responseJsonObject.addProperty("message", "Username does not exist");
                 } else {
-                    if (validateUser(username, password, conn)) {
+                    Integer userId = validateUser(username, password, conn);
+                    if (userId != null) {
+                        // Store the user ID in the session and add it to the response JSON
                         request.getSession().setAttribute("user", new User(username));
+                        request.getSession().setAttribute("user_id", userId);
+
                         responseJsonObject.addProperty("status", "success");
                         responseJsonObject.addProperty("message", "Log in successfully");
+                        responseJsonObject.addProperty("user_id", userId);
                     } else {
                         responseJsonObject.addProperty("status", "fail");
                         responseJsonObject.addProperty("message", "Password does not match");
@@ -59,12 +64,18 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private boolean validateUser(String email, String password, Connection conn) throws SQLException {
+    private Integer validateUser(String email, String password, Connection conn) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement("SELECT id FROM customers WHERE email = ? AND password = ?")) {
             stmt.setString(1, email);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-            return rs.next();
+
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                // if invalid
+                return null;
+            }
         }
     }
 }
