@@ -6,6 +6,10 @@
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
+let currentPage = 0;
+let moviesPerPage = 25;
+let sortBy = 'ratingDescTitleAsc'
+
 function handleSearchResult(resultData) {
     console.log("handleSearchResult: populating result table from resultData");
 
@@ -14,6 +18,7 @@ function handleSearchResult(resultData) {
 
     // Populate the result table
     let resultTableBodyElement = jQuery("#result_table_body");
+    resultTableBodyElement.html("");
 
     for (let i = 0; i < resultData.length; i++) {
         let rowHTML = "";
@@ -27,20 +32,61 @@ function handleSearchResult(resultData) {
         rowHTML += "</tr>";
 
         // Log the generated rowHTML to see if it's being created correctly
-        console.log(rowHTML);
+        // console.log(rowHTML);
 
         resultTableBodyElement.append(rowHTML);
     }
 }
 
-// Send an AJAX request to the backend API to get the search results
-jQuery.ajax({
-    dataType: "json",
-    method: "GET",
-    url: "/cs122b_project1_api_example_war/search" + window.location.search, // Use query parameters from the URL
-    success: (resultData) => handleSearchResult(resultData),
-    error: (jqXHR, textStatus, errorThrown) => {
-        // Log the error for debugging
-        console.error("AJAX request failed:", textStatus, errorThrown);
+function fetchResults(currentPage, moviesPerPage, sortBy) {
+    // Send an AJAX request to the backend API to get the search results
+    const urlParams = new URLSearchParams(window.location.search);
+    const genre = urlParams.get("genre");
+    const titleInitial = urlParams.get("titleInitial");
+
+    let requestUrl = `/cs122b_project1_api_example_war/search?page=${currentPage}&moviesPerPage=${moviesPerPage}&sortBy=${sortBy}`;
+    if (genre) {
+        requestUrl += `&genre=${encodeURIComponent(genre)}`;
+    }
+    if (titleInitial) {
+        requestUrl += `&titleInitial=${encodeURIComponent(titleInitial)}`;
+    }
+
+    jQuery.ajax({
+        dataType: "json",
+        method: "GET",
+        url: requestUrl,
+        success: (resultData) => handleSearchResult(resultData),
+        error: (jqXHR, textStatus, errorThrown) => {
+            // Log the error for debugging
+            console.error("AJAX request failed:", textStatus, errorThrown);
+        }
+    });
+}
+
+// Initial results on page
+fetchResults(currentPage, moviesPerPage, sortBy);
+
+// Dropdowns
+document.getElementById('updateButton').addEventListener('click', function () {
+    moviesPerPage = document.getElementById('movie-per-page').value;
+    sortBy = document.getElementById('sortBy').value;
+    currentPage = 0;
+
+    fetchResults(currentPage, moviesPerPage, sortBy);
+});
+
+// Prev button
+document.getElementById('prev-btn').addEventListener('click', function () {
+    if (currentPage > 0) {
+        currentPage -= 1;
+        fetchResults(currentPage, moviesPerPage, sortBy);
     }
 });
+
+// Next button
+document.getElementById('next-btn').addEventListener('click', function () {
+    currentPage += 1
+    fetchResults(currentPage, moviesPerPage, sortBy);
+});
+

@@ -32,15 +32,19 @@ public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String genre = request.getParameter("genre");
         String titleInitial = request.getParameter("titleInitial");
-
+        int page = Integer.parseInt(request.getParameter("page"));
+        int moviesPerPage = Integer.parseInt(request.getParameter("moviesPerPage"));
+        String sortBy = request.getParameter("sortBy");
 
         response.setContentType("application/json"); // Return JSON data
         PrintWriter out = response.getWriter();
         JSONArray jsonArray = new JSONArray();
 
-        try {
-            // Create a new connection to the database
-            Connection dbCon = dataSource.getConnection();
+        String orderByClause = getOrderByClause(sortBy);
+        String limitOffsetClause = " LIMIT ? OFFSET ? ";
+
+        // Create a new connection to the database
+        try (Connection dbCon = dataSource.getConnection()) {
             PreparedStatement statement;
 
             // Determine query type (search by genre, title initial, or general search)
@@ -76,10 +80,12 @@ public class MainServlet extends HttpServlet {
                         "LEFT JOIN genres g ON g.id = gm.genreId " +
                         "WHERE g.name = ? " +
                         "GROUP BY m.id, m.title, m.year, m.director, r.rating " +
-                        "ORDER BY r.rating DESC, m.title";
+                         orderByClause + limitOffsetClause;
 
                 statement = dbCon.prepareStatement(query);
                 statement.setString(1, genre);
+                statement.setInt(2, moviesPerPage);
+                statement.setInt(3, page * moviesPerPage);
             } else if (titleInitial != null && !titleInitial.trim().isEmpty()) {
                 // Search by Title Initial
                 String query = "SELECT m.id, m.title, m.year, m.director, r.rating, " +
@@ -121,12 +127,17 @@ public class MainServlet extends HttpServlet {
                 }
 
                 query += " GROUP BY m.id, m.title, m.year, m.director, r.rating " +
-                        "ORDER BY r.rating DESC, m.title";
+                        orderByClause + limitOffsetClause;
 
                 statement = dbCon.prepareStatement(query);
 
                 if (!titleInitial.equals("*")) {
                     statement.setString(1, titleInitial);
+                    statement.setInt(2, moviesPerPage);
+                    statement.setInt(3, page * moviesPerPage);
+                } else {
+                    statement.setInt(1, moviesPerPage);
+                    statement.setInt(2, page * moviesPerPage);
                 }
             } else {
                 // Retrieve search parameters
@@ -166,28 +177,21 @@ public class MainServlet extends HttpServlet {
                 queryBuilder.append("WHERE 1=1");
 
                 if (title != null && !title.trim().isEmpty()) {
-//                    query += " AND movies.title LIKE ?";
-//                    title = "%" + title + "%";
                     queryBuilder.append(" AND m.title LIKE ?");
                 }
                 if (year != null && !year.trim().isEmpty()) {
-//                    query += " AND movies.year = ?";
                     queryBuilder.append(" AND m.year = ?");
                 }
                 if (director != null && !director.trim().isEmpty()) {
-//                    query += " AND movies.director LIKE ?";
-//                    director = "%" + director + "%";
                     queryBuilder.append(" AND m.director LIKE ?");
                 }
                 if (star != null && !star.trim().isEmpty()) {
-//                    query += " AND stars.name LIKE ?";
-//                    star = "%" + star + "%";
                     queryBuilder.append(" AND EXISTS (SELECT 1 FROM stars_in_movies sim JOIN stars s ON s.id = sim.starId WHERE sim.movieId = m.id AND s.name LIKE ?)");
                 }
 
 //                query += " GROUP BY movies.id, movies.title, movies.year, movies.director";
-                queryBuilder.append(" GROUP BY m.id, m.title, m.year, m.director, r.rating");
-                queryBuilder.append(" ORDER BY r.rating DESC, m.title");
+                queryBuilder.append(" GROUP BY m.id, m.title, m.year, m.director, r.rating")
+                            .append(orderByClause).append(limitOffsetClause);
 
                 String query = queryBuilder.toString();
                 statement = dbCon.prepareStatement(query);
@@ -197,6 +201,8 @@ public class MainServlet extends HttpServlet {
                 if (year != null && !year.trim().isEmpty()) statement.setInt(index++, Integer.parseInt(year));
                 if (director != null && !director.trim().isEmpty()) statement.setString(index++, director);
                 if (star != null && !star.trim().isEmpty()) statement.setString(index++, star);
+                statement.setInt(index++, moviesPerPage);
+                statement.setInt(index, page * moviesPerPage);
             }
 
             ResultSet rs = statement.executeQuery();
@@ -262,8 +268,24 @@ public class MainServlet extends HttpServlet {
         } catch (Exception e) {
             request.getServletContext().log("General Error: ", e);
             out.write("{\"error\": \"Error in doGet: " + e.getMessage() + "\"}");
+        } finally {
+            out.close();
         }
-        out.close();
+    }
+
+    // Helper function to get the ORDER based on sortBy
+    private String getOrderByClause(String sortBy) {
+        switch (sortBy) {
+            case "titleAscRatingDesc": return " ORDER BY m.title ASC, r.rating DESC";
+            case "titleAscRatingAsc": return " ORDER BY m.title ASC, r.rating ASC";
+            case "titleDescRatingDesc": return " ORDER BY m.title DESC, r.rating DESC";
+            case "titleDescRatingAsc": return " ORDER BY m.title DESC, r.rating ASC";
+            case "ratingDescTitleAsc": return " ORDER BY r.rating DESC, m.title ASC";
+            case "ratingDescTitleDesc": return " ORDER BY r.rating DESC, m.title DESC";
+            case "ratingAscTitleAsc": return " ORDER BY r.rating ASC, m.title ASC";
+            case "ratingAscTitleDesc": return " ORDER BY r.rating ASC, m.title DESC";
+            default: return " ORDER BY r.rating DESC, m.title ASC"; // Default sorting
+        }
     }
 }
 
