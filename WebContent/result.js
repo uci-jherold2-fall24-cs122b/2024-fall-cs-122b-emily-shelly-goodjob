@@ -10,6 +10,29 @@ let currentPage = 0;
 let moviesPerPage = 25;
 let sortBy = 'ratingDescTitleAsc'
 
+function addToCart(movieId) {
+    console.log("Adding to cart: " + movieId);
+
+    jQuery.ajax({
+        url: "/api/addToCart",
+        method: "POST",
+        data: {
+            movieId: movieId,
+            quantity: 1
+        },
+        success: function(resultData) {
+            console.log("Success: ", resultData);
+            alert("Movie added to cart!");
+        },
+        error: function(xhr, status, errorThrown) {
+            console.log("Error adding to cart: " + status + ", error: " + errorThrown);
+            console.log("Detailed error: " + xhr.responseText);
+            alert("Error adding to cart. " + xhr.responseText);
+        }
+    });
+}
+
+
 function handleSearchResult(resultData) {
     console.log("handleSearchResult: populating result table from resultData");
 
@@ -29,6 +52,7 @@ function handleSearchResult(resultData) {
         rowHTML += "<td>" + resultData[i]["movie_genres"] + "</td>";
         rowHTML += "<td>" + resultData[i]["movie_stars"] + "</td>";
         rowHTML += "<td>" + resultData[i]["movie_rating"] + "</td>";
+        rowHTML += `<td><button onclick="addToCart('${resultData[i]['movie_id']}')">Add to Cart</button></td>`;
         rowHTML += "</tr>";
 
         // Log the generated rowHTML to see if it's being created correctly
@@ -125,4 +149,13 @@ document.getElementById('next-btn').addEventListener('click', function () {
 // Load cached data
 jQuery(document).ready(() => {
     loadCachedResults();
+});
+
+jQuery(document).ready(function() {
+    fetchResults(currentPage, moviesPerPage, sortBy);
+
+    jQuery(document).on('click', '.add-to-cart-btn', function() {
+        const movieId = jQuery(this).data('movie-id');
+        addToCart(movieId);
+    });
 });
