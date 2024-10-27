@@ -17,7 +17,7 @@
 function addToCart(movieId) {
     console.log("Adding to cart: " + movieId);
     jQuery.ajax({
-        url: "/api/addToCart",
+        url: "api/addToCart",
         method: "POST",
         data: {
             movieId: movieId,
@@ -57,7 +57,6 @@ function handleStarResult(resultData) {
         rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
-        rowHTML += `<td><button onclick="addToCart('${resultData[i]['movie_id']}')">Add to Cart</button></td>`;
         // console.log(resultData);
         // display stars
         let starsArray = resultData[i]["movie_stars"];
@@ -77,6 +76,7 @@ function handleStarResult(resultData) {
             "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='#FB83AA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>" +
             "<polygon points='12 2 15 8.6 22 9.3 17 14.3 18.5 21 12 17.8 5.5 21 7 14.3 2 9.3 9 8.6 12 2' />" +
             "</svg></span></th>";
+        rowHTML += `<td><button class="update-btn" onclick="addToCart('${resultData[i]['movie_id']}')">Add</button></td>`;
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
