@@ -45,7 +45,11 @@ function handleResult(resultData) {
     let movieInfoElement = jQuery("#movie_info");
 
     // append two html <p> created to the h3 body, which will refresh the page
-    movieInfoElement.append("<div class='page-title-text'>" + resultData["movie_title"] + "</div>" +
+    movieInfoElement.append(
+        "<div class='title-container'>" +
+        "<div class='page-title-text'>" + resultData["movie_title"] + "</div>" +
+        "<button class='update-btn' onclick=\"addToCart('" + resultData["movie_id"] + "')\">Add</button>" +
+        "</div>" +
         "<div class='page-subtitle-text'>Year: " + resultData["movie_year"] + "</div>" +
         "<div class='page-subtitle-text'>Director: " + resultData["movie_director"] + "</div>" +
         "<div class='page-subtitle-text'>Genres: " + resultData["movie_genres"] + "</div>" +
@@ -94,3 +98,23 @@ jQuery.ajax({
         console.error("Error: " + status + " " + error); // Log any errors
     }
 });
+
+function addToCart(movieId) {
+    console.log("Adding to cart: " + movieId);
+    jQuery.ajax({
+        url: "api/addToCart",
+        method: "POST",
+        data: {
+            movieId: movieId,
+            quantity: 1
+        },
+        success: function(resultData) {
+            console.log("Success: " + resultData);
+            alert("Movie added to cart!");
+        },
+        error: function(error) {
+            console.log("Error adding to cart: " + error);
+            alert("Error adding to cart.");
+        }
+    });
+}

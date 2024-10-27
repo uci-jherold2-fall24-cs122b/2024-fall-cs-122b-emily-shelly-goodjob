@@ -52,6 +52,7 @@ public class SingleMovieServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
             String query = "SELECT m.title AS movieTitle, " +
+                    "m.id AS movieID, " +
                     "m.year AS movieYear, " +
                     "m.director AS movieDirector, " +
                     "r.rating AS movieRating, " +
@@ -94,6 +95,7 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Iterate through each row of rs
             if (rs.next()) {
+                jsonObject.addProperty("movie_id", rs.getString("movieID"));
                 jsonObject.addProperty("movie_title", rs.getString("movieTitle"));
                 jsonObject.addProperty("movie_year", rs.getString("movieYear"));
                 jsonObject.addProperty("movie_director", rs.getString("movieDirector"));
