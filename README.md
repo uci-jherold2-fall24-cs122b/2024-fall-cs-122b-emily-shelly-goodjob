@@ -11,6 +11,8 @@ Task 5 & 6: Emily & Shelly
 
 
 ### Contribution:
+Task 1 & 4: Emily + Shelly
+Task 2 & 3: Emily
 
 
 ### Search Implementation
