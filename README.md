@@ -7,6 +7,7 @@ https://www.youtube.com/watch?v=BbaYB7Rwmbs
 Each goes through task 1 to task 4
 Task 5 & 6: Emily & Shelly
 
+
 ### Project 2 Demo video link:
 https://www.youtube.com/watch?v=0p3Lk-sll_0
 
