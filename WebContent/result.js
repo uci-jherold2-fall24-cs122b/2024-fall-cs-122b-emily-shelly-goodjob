@@ -171,40 +171,34 @@ function goBackToResults() {
     window.location.href = "result.html";
 }
 
-// Dropdowns
-document.getElementById('updateButton').addEventListener('click', function () {
-    clearCache();
-    moviesPerPage = document.getElementById('movie-per-page').value;
-    sortBy = document.getElementById('sortBy').value;
-    currentPage = 0;
-
-    fetchResults(currentPage, moviesPerPage, sortBy);
-});
-
-// Prev button
-document.getElementById('prev-btn').addEventListener('click', function () {
-    if (currentPage > 0) {
-        currentPage -= 1;
-        fetchResults(currentPage, moviesPerPage, sortBy);
-    }
-});
-
-// Next buttons
-document.getElementById('next-btn').addEventListener('click', function () {
-    currentPage += 1
-    fetchResults(currentPage, moviesPerPage, sortBy);
-});
-
-// Load cached data
-jQuery(document).ready(() => {
-    loadCachedResults();
-});
-
 jQuery(document).ready(function() {
-    fetchResults(currentPage, moviesPerPage, sortBy);
+    // Load cached results or fetch new results
+    loadCachedResults();
 
+    // Event listener for the add-to-cart buttons
     jQuery(document).on('click', '.add-to-cart-btn', function() {
         const movieId = jQuery(this).data('movie-id');
         addToCart(movieId);
+    });
+
+    // Event listeners for pagination and dropdowns
+    document.getElementById('updateButton').addEventListener('click', function () {
+        clearCache();
+        moviesPerPage = document.getElementById('movie-per-page').value;
+        sortBy = document.getElementById('sortBy').value;
+        currentPage = 0;
+        fetchResults(currentPage, moviesPerPage, sortBy);
+    });
+
+    document.getElementById('prev-btn').addEventListener('click', function () {
+        if (currentPage > 0) {
+            currentPage -= 1;
+            fetchResults(currentPage, moviesPerPage, sortBy);
+        }
+    });
+
+    document.getElementById('next-btn').addEventListener('click', function () {
+        currentPage += 1;
+        fetchResults(currentPage, moviesPerPage, sortBy);
     });
 });
