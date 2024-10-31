@@ -34,7 +34,6 @@ body::before {
 
 .login-container {
     width: 30rem;
-    height: 20rem;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -50,8 +49,8 @@ body::before {
     font-size: 1.65rem;
     width: 100%;
     font-weight: bold;
-    margin-top: 0;
     margin-bottom: 1.8rem;
+    margin-top: 0.8rem;
     color: #FB83AA;
 }
 
@@ -104,4 +103,11 @@ body::before {
 
 #login_form {
     width: 90%;
+}
+
+.g-recaptcha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
 }
