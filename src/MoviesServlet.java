@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Arrays;
@@ -44,8 +45,6 @@ public class MoviesServlet extends HttpServlet {
 
         try (Connection conn = dataSource.getConnection()) {
 
-            Statement statement = conn.createStatement();
-
             String query = "SELECT m.id, m.title, m.year, m.director, r.rating, " +
                     "(SELECT GROUP_CONCAT(g.name ORDER BY g.name) " +
                     " FROM genres g " +
@@ -71,7 +70,8 @@ public class MoviesServlet extends HttpServlet {
                     "ORDER BY r.rating DESC " +
                     "LIMIT 20;";
 
-            ResultSet rs = statement.executeQuery(query);
+            PreparedStatement statement = conn.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 
@@ -86,10 +86,6 @@ public class MoviesServlet extends HttpServlet {
                 String movie_stars = rs.getString("stars");
                 String movie_star_ids = rs.getString("star_ids");
 
-//                String star_id = rs.getString("id");
-//                String star_name = rs.getString("name");
-//                String star_dob = rs.getString("birthYear");
-
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", movie_id);
@@ -97,7 +93,6 @@ public class MoviesServlet extends HttpServlet {
                 jsonObject.addProperty("movie_year", movie_year);
                 jsonObject.addProperty("movie_director", movie_director);
                 jsonObject.addProperty("movie_rating", movie_rating);
-//                jsonObject.addProperty("movie_genres", movie_genres);
 
                 // Genres
                 String[] genresArray = movie_genres.split(",");
@@ -116,10 +111,6 @@ public class MoviesServlet extends HttpServlet {
                     starsArray.add(star);
                 }
                 jsonObject.add("movie_stars", starsArray);
-
-//                jsonObject.addProperty("star_id", star_id);
-//                jsonObject.addProperty("star_name", star_name);
-//                jsonObject.addProperty("star_dob", star_dob);
 
                 jsonArray.add(jsonObject);
             }
@@ -146,8 +137,5 @@ public class MoviesServlet extends HttpServlet {
         } finally {
             out.close();
         }
-
-        // Always remember to close db connection after usage. Here it's done by try-with-resources
-
     }
 }
