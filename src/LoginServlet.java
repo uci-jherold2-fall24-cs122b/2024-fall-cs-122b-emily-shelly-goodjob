@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.naming.InitialContext;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
@@ -77,17 +78,20 @@ public class LoginServlet extends HttpServlet {
     }
 
     private Integer validateUser(String email, String password, Connection conn) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement("SELECT id FROM customers WHERE email = ? AND password = ?")) {
+        try (PreparedStatement stmt = conn.prepareStatement("SELECT id, password FROM customers WHERE email = ?")) {
             stmt.setString(1, email);
-            stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("id");
-            } else {
-                // if invalid
-                return null;
+                String encryptedPassword = rs.getString("password");
+                // Check if the provided password matches the encrypted password in the database
+                boolean passwordMatches = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
+
+                if (passwordMatches) {
+                    return rs.getInt("id");
+                }
             }
+            return null;
         }
     }
 }
