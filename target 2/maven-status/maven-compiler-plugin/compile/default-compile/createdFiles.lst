@@ -1,0 +1,15 @@
+GenreServlet.class
+SingleStarServlet.class
+AddToCartServlet.class
+LoginServlet.class
+SingleMovieServlet.class
+GetCartServlet.class
+MainServlet.class
+UpdateCartItemServlet.class
+MoviesServlet.class
+LoginFilter.class
+TitleServlet.class
+IndexServlet.class
+User.class
+DeleteCartItemServlet.class
+PlaceOrderServlet.class
