@@ -12,9 +12,6 @@ import java.util.ArrayList;
 public class LoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
 
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -29,12 +26,19 @@ public class LoginFilter implements Filter {
             return;
         }
 
-        // Redirect to login page if the "user" attribute doesn't exist in session
-        if (httpRequest.getSession().getAttribute("user") == null) {
+        // Check session attributes for 'user' or 'employee' based on URL path
+        if (httpRequest.getRequestURI().contains("_dashboard")) {
+            if (httpRequest.getSession().getAttribute("employee") == null) {
+                httpResponse.sendRedirect("login.html?error=employee_only");
+                return; // Stop further execution to prevent recursion
+            }
+        } else if (httpRequest.getSession().getAttribute("user") == null) {
             httpResponse.sendRedirect("login.html");
-        } else {
-            chain.doFilter(request, response);
+            return; // Stop further execution to prevent recursion
         }
+
+        // If session attributes are valid, continue to the requested resource
+        chain.doFilter(request, response);
     }
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
@@ -47,6 +51,9 @@ public class LoginFilter implements Filter {
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
         allowedURIs.add("api/login");
+        allowedURIs.add("_dashboard/login.html");
+        allowedURIs.add("_dashboard/login");
+//        allowedURIs.add("_dashboard/*");
 
         // Allow common static file extensions
         allowedURIs.add(".css");

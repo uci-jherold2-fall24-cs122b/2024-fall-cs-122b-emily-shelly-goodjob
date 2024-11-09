@@ -1,3 +1,4 @@
+package com.example.utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javax.net.ssl.HttpsURLConnection;
@@ -51,4 +52,8 @@ public class RecaptchaVerifyUtils {
         throw new Exception("recaptcha verification failed: response is " + jsonObject);
     }
 
+    public static class RecaptchaConstants {
+        public static final String SECRET_KEY ="6LejInEqAAAAACId_TYRKvHXjhvHMAAdrYua4l-m";
+
+    }
 }

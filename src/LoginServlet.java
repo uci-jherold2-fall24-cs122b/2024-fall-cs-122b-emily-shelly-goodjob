@@ -12,6 +12,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.naming.InitialContext;
 import org.jasypt.util.password.StrongPasswordEncryptor;
+import com.example.utils.RecaptchaVerifyUtils;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
