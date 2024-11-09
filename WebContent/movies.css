@@ -39,6 +39,24 @@ body::before {
     font-weight: bold;
 }
 
+.page-title-text-dashboard {
+    font-size: x-large;
+    width: 65%;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.table-header {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .page-subtitle-text {
     font-size: large;
     font-style: italic;
@@ -49,6 +67,20 @@ body::before {
     top: 0;
     background-color: #FEFCFC;
     width: 100%;
+    margin: 0 0 1rem;
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    z-index: 1000;
+    padding-left: 10%;
+    align-items: center;
+}
+
+.nav-dashboard {
+    position: sticky;
+    top: 0;
+    background-color: #FEFCFC;
+    width: 85%;
     margin: 0 0 1rem;
     list-style: none;
     display: flex;
@@ -181,7 +213,7 @@ body::before {
 .logo-img {
     width: 2rem;
     height: 2rem;
-    margin-top: 0.85rem;
+    /*margin-top: 0.85rem;*/
 }
 
 .star {
@@ -399,4 +431,28 @@ body::before {
     margin-top: 1rem;
     margin-bottom: 1rem;
     border-radius: .37rem;
+}
+
+.metadata-container {
+    width: 80%;
+}
+
+.table-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.table-bordered {
+    border-radius: 8px;
+}
+
+.th-col {
+    width: 50%;
+}
+
+.th-col, .td-col {
+    text-align: center;
+    vertical-align: middle;
 }
