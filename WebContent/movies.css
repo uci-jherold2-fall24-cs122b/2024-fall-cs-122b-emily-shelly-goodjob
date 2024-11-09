@@ -46,6 +46,16 @@ body::before {
     font-weight: bold;
 }
 
+.page-title-text-add {
+    font-size: x-large;
+    width: 65%;
+    font-style: italic;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
 .table-header {
     font-size: 1.3rem;
     font-weight: bold;
@@ -60,6 +70,16 @@ body::before {
 .page-subtitle-text {
     font-size: large;
     font-style: italic;
+}
+
+.page-subtitle-text-add {
+    font-size: large;
+    font-style: italic;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
 }
 
 .nav {
