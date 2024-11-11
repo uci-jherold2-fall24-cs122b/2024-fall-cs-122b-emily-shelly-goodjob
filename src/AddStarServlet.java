@@ -43,6 +43,7 @@ public class AddStarServlet extends HttpServlet {
                 }
 
                 // Insert new star with generated ID
+// Insert new star with generated ID
                 String insertQuery = "INSERT INTO stars (id, name, birthYear) VALUES (?, ?, ?)";
                 try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
                     stmt.setString(1, newStarId);
@@ -57,6 +58,9 @@ public class AddStarServlet extends HttpServlet {
                     if (rowsAffected > 0) {
                         jsonResponse.addProperty("status", "success");
                         jsonResponse.addProperty("message", "Success! Star ID: " + newStarId);
+
+                        // Add a print statement to confirm the successful insertion
+                        System.out.println("Inserted star: " + starName + " with ID: " + newStarId);
                     } else {
                         jsonResponse.addProperty("status", "fail");
                         jsonResponse.addProperty("message", "Failed to add the star.");
