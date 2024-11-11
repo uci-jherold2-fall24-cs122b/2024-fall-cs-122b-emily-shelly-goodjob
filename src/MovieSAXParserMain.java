@@ -22,7 +22,9 @@ public class MovieSAXParserMain {
             populateCache(connection, starsCache, "SELECT name, birthYear FROM stars", "name", "birthYear");
 
             MovieSAXParser parser = new MovieSAXParser(connection, moviesCache, genresCache, starsCache);
-            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/mains243.xml");
+//            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/mains243.xml");
+            parser.parseDocument("../stanford-movies/mains243.xml");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

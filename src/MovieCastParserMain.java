@@ -30,8 +30,8 @@ public class MovieCastParserMain {
 
             // Initialize and run the MovieCastParser
             MovieCastParser parser = new MovieCastParser(dbConnection, actorsCache, moviesCache);
-            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/casts124.xml");
-
+//            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/casts124.xml");
+            parser.parseDocument("../stanford-movies/casts124.xml");
         } catch (SQLException e) {
             System.err.println("Database connection failed.");
             e.printStackTrace();

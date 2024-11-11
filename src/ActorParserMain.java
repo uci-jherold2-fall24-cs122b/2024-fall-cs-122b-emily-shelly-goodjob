@@ -17,7 +17,9 @@ public class ActorParserMain {
             System.out.println("Database connection established.");
 
             ActorParser parser = new ActorParser(dbConnection, actorsCache, moviesCache);
-            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/actors63.xml");
+//            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/actors63.xml");
+
+            parser.parseDocument("../stanford-movies/actors63.xml");
 
             // Ensure all tasks complete before closing the connection
             parser.awaitTermination();
