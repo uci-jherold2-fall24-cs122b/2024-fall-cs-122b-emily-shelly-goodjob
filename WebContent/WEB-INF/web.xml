@@ -15,14 +15,14 @@
         <res-auth>Container</res-auth>
     </resource-ref>
 
-    <servlet>
-        <servlet-name>DashboardServlet</servlet-name>
-        <servlet-class>com.example.DashboardServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DashboardServlet</servlet-name>
-        <url-pattern>/_dashboard/login</url-pattern>
-    </servlet-mapping>
+<!--    <servlet>-->
+<!--        <servlet-name>DashboardServlet</servlet-name>-->
+<!--        <servlet-class>com.example.DashboardServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>DashboardServlet</servlet-name>-->
+<!--        <url-pattern>/_dashboard/login</url-pattern>-->
+<!--    </servlet-mapping>-->
 
     <security-constraint>
         <web-resource-collection>
