@@ -83,12 +83,12 @@ public class AddStarServlet extends HttpServlet {
         conn.setAutoCommit(false); // Begin transaction
 
         try {
-            // Lock the helper table
-            try (PreparedStatement lockStmt = conn.prepareStatement("LOCK TABLES star_id_helper WRITE")) {
+            // Lock both `star_id_helper` and `stars` tables for consistency
+            try (PreparedStatement lockStmt = conn.prepareStatement("LOCK TABLES star_id_helper WRITE, stars WRITE")) {
                 lockStmt.execute();
             }
 
-            // Retrieve the last used star ID
+            // Retrieve the last used star ID from `star_id_helper`
             String currentId = null;
             try (PreparedStatement getIdStmt = conn.prepareStatement("SELECT last_id FROM star_id_helper")) {
                 ResultSet rs = getIdStmt.executeQuery();
@@ -101,8 +101,21 @@ public class AddStarServlet extends HttpServlet {
             if (currentId != null) {
                 String prefix = currentId.substring(0, 2); // "nm"
                 int numericPart = Integer.parseInt(currentId.substring(2)); // e.g., "9423081" to 9423081
-                numericPart++; // Increment for the new ID
-                newId = prefix + numericPart;
+
+                // Loop to find the next available ID
+                boolean idExists;
+                do {
+                    numericPart++; // Increment for the new ID
+                    newId = prefix + numericPart;
+
+                    // Check if this ID already exists in the `stars` table
+                    try (PreparedStatement checkStmt = conn.prepareStatement("SELECT 1 FROM stars WHERE id = ?")) {
+                        checkStmt.setString(1, newId);
+                        try (ResultSet checkRs = checkStmt.executeQuery()) {
+                            idExists = checkRs.next();
+                        }
+                    }
+                } while (idExists); // Continue if the ID already exists
 
                 // Update the last_id in the helper table
                 try (PreparedStatement updateStmt = conn.prepareStatement("UPDATE star_id_helper SET last_id = ?")) {
@@ -116,7 +129,7 @@ public class AddStarServlet extends HttpServlet {
             conn.rollback();
             throw e;
         } finally {
-            // Unlock the helper table
+            // Unlock the tables
             try (PreparedStatement unlockStmt = conn.prepareStatement("UNLOCK TABLES")) {
                 unlockStmt.execute();
             }
@@ -124,4 +137,5 @@ public class AddStarServlet extends HttpServlet {
         }
         return newId;
     }
+
 }
