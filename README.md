@@ -23,6 +23,7 @@ The search functionality allows users to find movies by title, year, director, a
 
 
 ### Project 3 Demo video link:
+https://www.youtube.com/watch?v=r4CbXQOFUdQ
 
 ### Contribution:
 Task 1-6: Emily + Shelly
