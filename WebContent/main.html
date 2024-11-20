@@ -38,17 +38,24 @@
         <a class="nav-link active" aria-current="page" href="ShoppingCart.html">Checkout</a>
     </li>
 
-    <!--Search Form-->
+    <!--Fulltext Search Form-->
     <li class="nav-item">
-        <form class="search-form" action="result.html" method="GET">
-            <input type="text" name="title" placeholder="Title">
-            <input type="text" name="year" placeholder="Year">
-            <input type="text" name="director" placeholder="Director">
-            <input type="text" name="star" placeholder="Star's Name">
+        <form class="fulltext-search-form">
+            <input type="text" name="title" id="autocomplete"
+                   placeholder="Fulltext Search">
             <button type="submit">Search</button>
         </form>
     </li>
 </ul>
+
+<!--Search Form-->
+<form class="search-form" action="result.html" method="GET">
+    <input type="text" name="title" placeholder="Title">
+    <input type="text" name="year" placeholder="Year">
+    <input type="text" name="director" placeholder="Director">
+    <input type="text" name="star" placeholder="Star's Name">
+    <button type="submit">Search</button>
+</form>
 
 <!--Browsing-->
 <div class="browse-outer-cnt">
