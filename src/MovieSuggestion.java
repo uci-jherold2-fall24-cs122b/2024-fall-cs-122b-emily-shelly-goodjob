@@ -51,7 +51,6 @@ public class MovieSuggestion extends HttpServlet {
                 }
             }
 
-            // TODO: in project 4, you should do full text search with MySQL to find the matches on movies and stars
             String sql = "SELECT id, title FROM movies WHERE MATCH(title) AGAINST(? IN BOOLEAN MODE) LIMIT 10";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, searchString.toString().trim());

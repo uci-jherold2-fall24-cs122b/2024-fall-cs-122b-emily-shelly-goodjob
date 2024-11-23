@@ -1,6 +1,5 @@
-/**
- * Fetch and display genres and title initials for browsing.
- */
+// Cache suggestions in SessionStorage
+var suggestionCache = new Map();
 
 // Fetch genres and display them as links
 function fetchGenres() {
@@ -45,7 +44,9 @@ function goBackToResults() {
 function handleLookupAjaxSuccess(data, query, doneCallback) {
     console.log(data)
 
-    // TODO: if you want to cache the result into a global variable you can do it here
+    // Cache the result into SessionStorage
+    suggestionCache.set(query, data);
+    sessionStorage.setItem("autocompleteCache", JSON.stringify([...suggestionCache]));
 
     doneCallback( { suggestions: data } );
 }
@@ -56,12 +57,30 @@ function handleSelectSuggestion(suggestion) {
     window.location.href = `single-movie.html?id=${encodeURIComponent(movieID)}`;
 }
 
+function retrieveCacheFromSessionStorage(query) {
+    const cachedData = sessionStorage.getItem("autocompleteCache");
+    if (cachedData) {
+        const cachedMap = new Map(JSON.parse(cachedData));
+        suggestionCache.clear();
+        cachedMap.forEach((value, key) => suggestionCache.set(key, value)); // Repopulate the in-memory cache
+        return suggestionCache.get(query);
+    }
+    return null;
+}
+
 // Autocomplete
 function handleLookup(query, doneCallback) {
     console.log("autocomplete initiated")
-    console.log("sending AJAX request to backend Java Servlet")
 
-    // TODO: if you want to check past query results first, you can do it here
+    const cachedSuggestions = suggestionCache.get(query) || retrieveCacheFromSessionStorage(query);
+    if (cachedSuggestions) {
+        console.log("Using cached results for query:", query);
+        console.log("Cached suggestions:", cachedSuggestions);
+        doneCallback({ suggestions: cachedSuggestions });
+        return;
+    }
+
+    console.log("sending AJAX request to backend Java Servlet")
 
     jQuery.ajax({
         "method": "GET",
@@ -75,12 +94,6 @@ function handleLookup(query, doneCallback) {
         }
     })
 }
-
-// Full Text Search
-// function handleNormalSearch(query) {
-//     console.log("doing normal search with query: " + query);
-//     // TODO: you should do normal search here
-// }
 
 // Execute fetching on page load
 jQuery(document).ready(function () {
