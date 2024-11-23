@@ -1,10 +1,3 @@
-<!-- This example is following frontend and backend separation.
-
-    This .html performs two steps:
-    1. Create a html template skeleton, with all the elements defined (some left empty) and named with ids.
-    2. Load index.js to populate the data into empty elements.
-    -->
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,8 +33,8 @@
 
     <!--Fulltext Search Form-->
     <li class="nav-item">
-        <form class="fulltext-search-form">
-            <input type="text" name="title" id="autocomplete"
+        <form class="fulltext-search-form" action="result.html" method="GET">
+            <input type="text" name="query" id="autocomplete"
                    placeholder="Fulltext Search">
             <button type="submit">Search</button>
         </form>
@@ -76,15 +69,14 @@
     <p>2024 <span class="highlighted-name">Emily Wang</span> & <span class="highlighted-name">Yiwen Wu</span>. All rights reserved.</p>
 </footer>
 
-<!-- Load jQuery and Bootstrap JS -->
+<!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- jQuery Autocomplete plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
+<!-- Load Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-<!-- Load our own JS file -->
-<!-- The path is relative to index.html, since these two files are in the same directory -->
-<!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
-     otherwise the url is relative to the root path-->
 <script src="main.js"></script>
 </body>
 </html>

@@ -233,3 +233,25 @@ body::before {
     text-decoration: underline;
 }
 
+/*Dropdowns*/
+.autocomplete-suggestions {
+    background-color: #FEFCFC;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.autocomplete-suggestion {
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333333;
+}
+
+.autocomplete-selected {
+    background-color: #74B0C6;
+    color: #FEFCFC;
+}
+

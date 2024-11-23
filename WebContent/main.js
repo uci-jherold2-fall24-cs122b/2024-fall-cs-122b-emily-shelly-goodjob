@@ -36,10 +36,50 @@ function fetchTitleInitials() {
     });
 }
 
+// Navigate to the Movie List page, which loads cached data on load
 function goBackToResults() {
-    // Navigate to the Movie List page, which loads cached data on load
-    sessionStorage.setItem("navigateToResults", "true"); // store whether click on hyperlink
+    sessionStorage.setItem("navigateToResults", "true");
     window.location.href = "result.html";
+}
+
+function handleLookupAjaxSuccess(data, query, doneCallback) {
+    console.log(data)
+
+    // TODO: if you want to cache the result into a global variable you can do it here
+
+    doneCallback( { suggestions: data } );
+}
+
+function handleSelectSuggestion(suggestion) {
+    console.log("you select " + suggestion["value"] + " with ID " + suggestion["data"]["movieID"]);
+    const movieID = suggestion["data"]["movieID"];
+    window.location.href = `single-movie.html?id=${encodeURIComponent(movieID)}`;
+}
+
+// Autocomplete
+function handleLookup(query, doneCallback) {
+    console.log("autocomplete initiated")
+    console.log("sending AJAX request to backend Java Servlet")
+
+    // TODO: if you want to check past query results first, you can do it here
+
+    jQuery.ajax({
+        "method": "GET",
+        "url": "movie-suggestion?query=" + escape(query),
+        "success": function(data) {
+            handleLookupAjaxSuccess(data, query, doneCallback)
+        },
+        "error": function(errorData) {
+            console.log("lookup ajax error")
+            console.log(errorData)
+        }
+    })
+}
+
+// Full Text Search
+function handleNormalSearch(query) {
+    console.log("doing normal search with query: " + query);
+    // TODO: you should do normal search here
 }
 
 // Execute fetching on page load
@@ -47,3 +87,31 @@ jQuery(document).ready(function () {
     fetchGenres();
     fetchTitleInitials();
 });
+
+$('#autocomplete').autocomplete({
+    // documentation of the lookup function can be found under the "Custom lookup function" section
+    lookup: function (query, doneCallback) {
+        handleLookup(query, doneCallback)
+    },
+    onSelect: function(suggestion) {
+        handleSelectSuggestion(suggestion)
+    },
+
+    deferRequestBy: 300,
+    minChars: 3,
+});
+
+// bind pressing enter key to a handler function
+$('#autocomplete').keypress(function(event) {
+    // keyCode 13 is the enter key
+    if (event.keyCode == 13) {
+        // pass the value of the input box to the handler function
+        handleNormalSearch($('#autocomplete').val())
+    }
+})
+
+// // TODO: if you have a "search" button, you may want to bind the onClick event as well of that button
+// $('#search-button').click(function () {
+//     const query = $('#autocomplete').val();
+//     handleNormalSearch(query);
+// });

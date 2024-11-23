@@ -38,7 +38,7 @@ function getParameterByName(target) {
 
 function handleResult(resultData) {
 
-    console.log("handleResult: populating star info from resultData");
+    // console.log("handleResult: populating star info from resultData");
 
     // populate the star info h3
     // find the empty h3 body by id "movie_info"
@@ -56,7 +56,7 @@ function handleResult(resultData) {
         "<div class='page-subtitle-text'>Rating: " + resultData["movie_rating"] + "</div>"
     );
 
-    console.log("handleResult: populating movie table from resultData");
+    // console.log("handleResult: populating movie table from resultData");
 
     // Populate the star table
     // Find the empty table body by id "star_table_body"
