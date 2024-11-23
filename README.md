@@ -1,89 +1,89 @@
 # CS122B Project
 
 ## Project 1
-**Demo Video Link**: [Project 1 Demo](https://www.youtube.com/watch?v=BbaYB7Rwmbs)
+- #### Demo Video Link**: [Project 1 Demo](https://www.youtube.com/watch?v=BbaYB7Rwmbs)
 
-#### Contribution
-- Tasks 1-4: All members
-- Tasks 5 & 6: Emily & Shelly
+- #### Contribution
+- ##### Tasks 1-4: All members
+- ##### Tasks 5 & 6: Emily & Shelly
 
 ## Project 2
-**Demo Video Link**: [Project 2 Demo](https://www.youtube.com/watch?v=0p3Lk-sll_0)
+- #### Demo Video Link**: [Project 2 Demo](https://www.youtube.com/watch?v=0p3Lk-sll_0)
 
-#### Contribution
-- Tasks 1 & 4: Emily + Shelly
-- Tasks 2 & 3: Emily
+- #### Contribution
+- ##### Tasks 1 & 4: Emily + Shelly
+- ##### Tasks 2 & 3: Emily
 
 ### Search Implementation
-The search functionality enables users to find movies by:
-- **Title**, **Year**, **Director**, and **Star's Name**
-  - Substring Matching: Supported for `title`, `director`, and `star` fields using `LIKE` predicate.
-  - Example Query: `SELECT * FROM movies WHERE title LIKE '%Term%'` retrieves movies like "Terminator" and "Terminal".
-  - Exact Match: Year supports exact matches only.
+- #### The search functionality enables users to find movies by:
+- #### Title**, **Year**, **Director**, and **Star's Name
+  - ##### Substring Matching: Supported for `title`, `director`, and `star` fields using `LIKE` predicate.
+  - ##### Example Query: `SELECT * FROM movies WHERE title LIKE '%Term%'` retrieves movies like "Terminator" and "Terminal".
+  - ##### Exact Match: Year supports exact matches only.
 
 ## Project 3
-**Demo Video Link**: [Project 3 Demo](https://www.youtube.com/watch?v=r4CbXQOFUdQ)
+- #### Demo Video Link**: [Project 3 Demo](https://www.youtube.com/watch?v=r4CbXQOFUdQ)
 
-#### Contribution
-- Tasks 1-6: Emily + Shelly
+- #### Contribution
+- ##### Tasks 1-6: Emily + Shelly
 
-### XML Parsing Optimizations
+- #### XML Parsing Optimizations
 
-1. **Multi-threaded Parsing with Task Queues**
-  - Description: Utilized Java’s `ExecutorService` to parallelize XML parsing by distributing different XML elements across multiple threads. Each thread processes a chunk of XML data, performing batch inserts into the database.
-  - Improvement: Achieved ~50% runtime reduction on large files due to concurrent processing of XML elements.
+- ##### Multi-threaded Parsing with Task Queues
+  - ###### Description: Utilized Java’s `ExecutorService` to parallelize XML parsing by distributing different XML elements across multiple threads. Each thread processes a chunk of XML data, performing batch inserts into the database.
+  - ###### Improvement: Achieved ~50% runtime reduction on large files due to concurrent processing of XML elements.
 
-2. **Preloaded Cache for Frequent Lookups**
-  - Description: Loaded existing movies, stars, and genres into an in-memory cache before parsing, enabling the parser to quickly verify existing records without frequent database queries.
-  - Improvement: Reduced query load on the database, cutting processing time by around 40% through minimized I/O operations.
+- ##### Preloaded Cache for Frequent Lookups
+  - ###### Description: Loaded existing movies, stars, and genres into an in-memory cache before parsing, enabling the parser to quickly verify existing records without frequent database queries.
+  - ###### Improvement: Reduced query load on the database, cutting processing time by around 40% through minimized I/O operations.
 
-### Inconsistency Report
+- #### Inconsistency Report
 
-#### 1. Data Format Errors
-Errors due to unexpected formats in XML data.
+- ##### 1. Data Format Errors
+- ###### Errors due to unexpected formats in XML data.
 
-- **Inconsistent `dod` Format**
-  - Example: Actor "Bonzo" had `dod` with extra characters (`1992+`).
-  - Resolution: Converted to `1992` for parsing and inserted as `birthYear`.
+- ##### Inconsistent `dod` Format
+  - ###### Example: Actor "Bonzo" had `dod` with extra characters (`1992+`).
+  - ###### Resolution: Converted to `1992` for parsing and inserted as `birthYear`.
 
-- **Invalid Birth Year**
-  - Example: Actor "Darrell Zwerling" had non-integer characters in `birthYear`.
-  - Resolution: Set `birthYear` to NULL to maintain database consistency.
+- ##### Invalid Birth Year
+  - ###### Example: Actor "Darrell Zwerling" had non-integer characters in `birthYear`.
+  - ###### Resolution: Set `birthYear` to NULL to maintain database consistency.
 
-#### 2. Duplicate Data Conflicts
-Duplicates detected during insertion of entries with the same `id` or `name`.
+- #### 2. Duplicate Data Conflicts
+- ###### Duplicates detected during insertion of entries with the same `id` or `name`.
 
-- **Duplicate Star Entries**
-  - Example: "James Abrahams"
-  - Resolution: Skipped duplicate insertion to avoid conflicting `id`.
+- ###### Duplicate Star Entries
+  - ###### Example: "James Abrahams"
+  - ###### Resolution: Skipped duplicate insertion to avoid conflicting `id`.
 
-#### 3. Missing or Null Values
-Partial entries or records with NULL values due to omitted optional fields.
+- #### 3. Missing or Null Values
+- ##### Partial entries or records with NULL values due to omitted optional fields.
 
-- **Actor Missing `name`**
-  - Issue: Entries with missing `name` or `stagename` were skipped.
+- ##### Actor Missing `name`
+  - ###### Issue: Entries with missing `name` or `stagename` were skipped.
 
-- **Actors without `birthYear`**
-  - Example: "F. Murray Abraham" (missing `birthYear`).
-  - Resolution: Inserted with `birthYear` as NULL.
+- ##### Actors without `birthYear`
+  - ###### Example: "F. Murray Abraham" (missing `birthYear`).
+  - ###### Resolution: Inserted with `birthYear` as NULL.
 
-#### 4. Relationship and Reference Errors
-Orphaned records due to missing references in primary tables.
+- #### 4. Relationship and Reference Errors
+- ##### Orphaned records due to missing references in primary tables.
 
-- **Unresolved Movie Reference**
-  - Example: Actor "Victoria Abril" referencing a missing movie ID.
-  - Resolution: Skipped linking record due to the absence of the referenced movie in `movies` table.
+- ##### Unresolved Movie Reference**
+  - ###### Example: Actor "Victoria Abril" referencing a missing movie ID.
+  - ###### Resolution: Skipped linking record due to the absence of the referenced movie in `movies` table.
 
-#### 5. Parsing Exceptions
-Exceptions encountered during parsing due to data integrity or connectivity issues.
+- #### 5. Parsing Exceptions
+- ##### Exceptions encountered during parsing due to data integrity or connectivity issues.
 
-- **SQLIntegrityConstraintViolationException**
-  - Issue: Attempted duplicate primary key insertion.
-  - Resolution: Logged "Already in database" message and skipped insertion.
+- ##### QLIntegrityConstraintViolationException
+  - ###### Issue: Attempted duplicate primary key insertion.
+  - ###### Resolution: Logged "Already in database" message and skipped insertion.
 
-- **Connection Closed Exception**
-  - Issue: Unexpected database disconnection.
-  - Resolution: Reconnected to the database and resumed parsing.
+- ##### Connection Closed Exception**
+  - ###### Issue: Unexpected database disconnection.
+  - ###### Resolution: Reconnected to the database and resumed parsing.
 
 ## Project 4
   - #### Team#:
@@ -95,7 +95,6 @@ Exceptions encountered during parsing due to data integrity or connectivity issu
   - #### Instruction of deployment:
 
   - #### Collaborations and Work Distribution:
-
 
 - ### Connection Pooling
   - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
@@ -193,29 +192,3 @@ Exceptions encountered during parsing due to data integrity or connectivity issu
       }
       ```
       - ###### PreparedStatement ensures consistent query execution and parameter handling, regardless of the database.
-
-
-- ### Master/Slave
-  - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-
-  - #### How read/write requests were routed to Master/Slave SQL?
-
-
-- ### JMeter TS/TJ Time Logs
-  - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
-
-
-- ### JMeter TS/TJ Time Measurement Report
-
-| **Single-instance Version Test Plan**          | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
-|------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
-| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-| Case 3: HTTPS/10 threads                       | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-| Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-
-| **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
-|------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
-| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-| Case 3: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
