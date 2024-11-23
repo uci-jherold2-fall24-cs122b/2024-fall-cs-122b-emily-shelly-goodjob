@@ -134,6 +134,7 @@ function fetchResults(currentPage, moviesPerPage, sortBy) {
     const year = urlParams.get("year");
     const director = urlParams.get("director");
     const star = urlParams.get("star");
+    const query = urlParams.get("query");
 
     let requestUrl = `/cs122b_project1_api_example_war/search?page=${currentPage}&moviesPerPage=${moviesPerPage}&sortBy=${sortBy}`;
     if (genre) requestUrl += `&genre=${encodeURIComponent(genre)}`;
@@ -142,6 +143,7 @@ function fetchResults(currentPage, moviesPerPage, sortBy) {
     if (year) requestUrl += `&year=${encodeURIComponent(year)}`;
     if (director) requestUrl += `&director=${encodeURIComponent(director)}`;
     if (star) requestUrl += `&star=${encodeURIComponent(star)}`;
+    if (query) requestUrl += `&query=${encodeURIComponent(query)}`;
 
     jQuery.ajax({
         dataType: "json",
@@ -157,7 +159,7 @@ function fetchResults(currentPage, moviesPerPage, sortBy) {
             }
 
             handleSearchResult(resultData);
-            cacheSearchResults(resultData, { currentPage, moviesPerPage, sortBy, genre, titleInitial, title, year, director, star });
+            cacheSearchResults(resultData, { currentPage, moviesPerPage, sortBy, genre, titleInitial, title, year, director, star, query });
         },
         error: (jqXHR, textStatus, errorThrown) => {
             console.error("AJAX request failed:", textStatus, errorThrown);

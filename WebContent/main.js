@@ -77,10 +77,10 @@ function handleLookup(query, doneCallback) {
 }
 
 // Full Text Search
-function handleNormalSearch(query) {
-    console.log("doing normal search with query: " + query);
-    // TODO: you should do normal search here
-}
+// function handleNormalSearch(query) {
+//     console.log("doing normal search with query: " + query);
+//     // TODO: you should do normal search here
+// }
 
 // Execute fetching on page load
 jQuery(document).ready(function () {
@@ -101,17 +101,29 @@ $('#autocomplete').autocomplete({
     minChars: 3,
 });
 
-// bind pressing enter key to a handler function
-$('#autocomplete').keypress(function(event) {
-    // keyCode 13 is the enter key
-    if (event.keyCode == 13) {
-        // pass the value of the input box to the handler function
-        handleNormalSearch($('#autocomplete').val())
-    }
-})
+// Handle form submission
+$('form.fulltext-search-form').on('submit', function(event) {
+    event.preventDefault();
 
-// // TODO: if you have a "search" button, you may want to bind the onClick event as well of that button
-// $('#search-button').click(function () {
-//     const query = $('#autocomplete').val();
-//     handleNormalSearch(query);
-// });
+    const query = $('#autocomplete').val().trim();
+
+    if (query) {
+        window.location.href = `result.html?query=${encodeURIComponent(query)}`;
+    } else {
+        alert("Please enter a search term.");
+    }
+});
+
+// Bind the "Enter" key to the same behavior
+$('#autocomplete').keypress(function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        const query = $(this).val().trim();
+
+        if (query) {
+            window.location.href = `result.html?query=${encodeURIComponent(query)}`;
+        } else {
+            alert("Please enter a search term.");
+        }
+    }
+});

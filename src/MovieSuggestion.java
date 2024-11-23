@@ -47,7 +47,7 @@ public class MovieSuggestion extends HttpServlet {
             StringBuilder searchString = new StringBuilder();
             for (String token : tokens) {
                 if (!token.isEmpty()) {
-                    searchString.append(token).append("* ");
+                    searchString.append("+").append(token).append("* ");
                 }
             }
 

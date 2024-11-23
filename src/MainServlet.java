@@ -35,6 +35,7 @@ public class MainServlet extends HttpServlet {
         int page = Integer.parseInt(request.getParameter("page"));
         int moviesPerPage = Integer.parseInt(request.getParameter("moviesPerPage"));
         String sortBy = request.getParameter("sortBy");
+        String queryParam = request.getParameter("query");
 
         response.setContentType("application/json"); // Return JSON data
         PrintWriter out = response.getWriter();
@@ -139,6 +140,103 @@ public class MainServlet extends HttpServlet {
                     statement.setInt(1, moviesPerPage);
                     statement.setInt(2, page * moviesPerPage);
                 }
+            } else if (queryParam != null && !queryParam.trim().isEmpty()) {
+                String[] tokens = queryParam.trim().split("\\s+");
+                StringBuilder searchString = new StringBuilder();
+                for (String token : tokens) {
+                    if (!token.isEmpty()) {
+                        searchString.append("+").append(token).append("* ");
+                    }
+                }
+
+                // Full-text search logic
+                String sql = "SELECT m.id, m.title, m.year, m.director, r.rating, " +
+                        "(SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ', ') " +
+                        " FROM genres g " +
+                        " JOIN genres_in_movies gm ON gm.genreId = g.id " +
+                        " WHERE gm.movieId = m.id " +
+                        " ORDER BY g.name LIMIT 3) AS genres, " +
+                        "(SELECT GROUP_CONCAT(star_info.star_name SEPARATOR ', ') " +
+                        " FROM ( " +
+                        "   SELECT s.name AS star_name " +
+                        "   FROM stars s " +
+                        "   JOIN stars_in_movies sim ON sim.starId = s.id " +
+                        "   WHERE sim.movieId = m.id " +
+                        "   ORDER BY (SELECT COUNT(*) FROM stars_in_movies WHERE starId = s.id) DESC, s.name " +
+                        "   LIMIT 3 " +
+                        ") AS star_info) AS stars, " +
+                        "(SELECT GROUP_CONCAT(star_info.star_id SEPARATOR ', ') " +
+                        " FROM ( " +
+                        "   SELECT s.id AS star_id " +
+                        "   FROM stars s " +
+                        "   JOIN stars_in_movies sim ON sim.starId = s.id " +
+                        "   WHERE sim.movieId = m.id " +
+                        "   ORDER BY (SELECT COUNT(*) FROM stars_in_movies WHERE starId = s.id) DESC, s.name " +
+                        "   LIMIT 3 " +
+                        ") AS star_info) AS star_ids " +
+                        "FROM movies m " +
+                        "LEFT JOIN ratings r ON m.id = r.movieId " +
+                        "WHERE MATCH(m.title) AGAINST(? IN BOOLEAN MODE) " +
+                        "GROUP BY m.id, m.title, m.year, m.director, r.rating " +
+                        orderByClause + limitOffsetClause;
+
+                statement = dbCon.prepareStatement(sql);
+                statement.setString(1, searchString.toString().trim());
+                statement.setInt(2, moviesPerPage);
+                statement.setInt(3, page * moviesPerPage);
+
+                ResultSet rs = statement.executeQuery();
+
+                // Convert result set to JSON
+                while (rs.next()) {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("movie_id", rs.getString("id"));
+                    jsonObject.put("movie_title", "<a href='single-movie.html?id=" + rs.getString("id") + "'>" + rs.getString("title") + "</a>");
+                    jsonObject.put("movie_year", rs.getString("year"));
+                    jsonObject.put("movie_director", rs.getString("director"));
+                    jsonObject.put("movie_rating", rs.getFloat("rating"));
+
+                    // Process genres as hyperlinks to genre browsing
+                    String genres = rs.getString("genres");
+                    if (genres != null) {
+                        String[] genreList = genres.split(", ");
+                        StringBuilder genreLinks = new StringBuilder();
+                        for (String gen : genreList) {
+                            genreLinks.append("<a href='result.html?genre=").append(gen).append("'>").append(gen).append("</a>, ");
+                        }
+                        if (genreLinks.length() > 2) {
+                            genreLinks.setLength(genreLinks.length() - 2);
+                        }
+                        jsonObject.put("movie_genres", genreLinks.toString());
+                    } else {
+                        jsonObject.put("movie_genres", "");
+                    }
+
+                    // Process stars as hyperlinks to single star pages
+                    String stars = rs.getString("stars");
+                    String star_ids = rs.getString("star_ids");
+                    if (stars != null && star_ids != null) {
+                        String[] starList = stars.split(", ");
+                        String[] starIdList = star_ids.split(", ");
+                        StringBuilder starLinks = new StringBuilder();
+                        for (int i = 0; i < starList.length; i++) {
+                            starLinks.append("<a href='single-star.html?id=").append(starIdList[i]).append("'>").append(starList[i]).append("</a>, ");
+                        }
+                        if (starLinks.length() > 2) {
+                            starLinks.setLength(starLinks.length() - 2);
+                        }
+                        jsonObject.put("movie_stars", starLinks.toString());
+                    } else {
+                        jsonObject.put("movie_stars", "");
+                    }
+
+                    jsonArray.put(jsonObject);
+                }
+
+                out.write(jsonArray.toString());
+                rs.close();
+                statement.close();
+                return; // Exit after handling the query
             } else {
                 // Retrieve search parameters
                 String title = request.getParameter("title");
