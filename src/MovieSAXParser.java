@@ -2,6 +2,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.sql.DataSource;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
@@ -22,13 +23,13 @@ public class MovieSAXParser extends DefaultHandler {
     private Map<String, String> existingStarsCache;
 
     private String tempVal;
-    private Connection dbConnection;
+    private DataSource dataSource;
     private ExecutorService executorService;
     private Movie currentMovie;
     private boolean isGenre = false;
 
-    public MovieSAXParser(Connection dbConnection, Map<String, String> moviesCache, Map<String, String> genresCache, Map<String, String> starsCache) {
-        this.dbConnection = dbConnection;
+    public MovieSAXParser(DataSource dataSource, Map<String, String> moviesCache, Map<String, String> genresCache, Map<String, String> starsCache) {
+        this.dataSource = dataSource;
         this.existingMoviesCache = moviesCache;
         this.existingGenresCache = genresCache;
         this.existingStarsCache = starsCache;
@@ -113,7 +114,8 @@ public class MovieSAXParser extends DefaultHandler {
         String movieKey = movie.getKey();
         if (existingMoviesCache.containsKey(movieKey)) return;
 
-        try (PreparedStatement ps = dbConnection.prepareStatement("INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)")) {
+        try (Connection dbConnection = dataSource.getConnection();
+             PreparedStatement ps = dbConnection.prepareStatement("INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)")) {
             ps.setString(1, movie.getId());
             ps.setString(2, movie.getTitle());
 
@@ -149,7 +151,8 @@ public class MovieSAXParser extends DefaultHandler {
         }
 
         // Only proceed if the genre does not exist in the cache
-        try (PreparedStatement checkStmt = dbConnection.prepareStatement("SELECT COUNT(*) FROM genres WHERE name = ?")) {
+        try (Connection dbConnection = dataSource.getConnection();
+             PreparedStatement checkStmt = dbConnection.prepareStatement("SELECT COUNT(*) FROM genres WHERE name = ?")) {
             checkStmt.setString(1, genre);
 
             try (ResultSet rs = checkStmt.executeQuery()) {
@@ -165,7 +168,8 @@ public class MovieSAXParser extends DefaultHandler {
         }
 
         // Insert the genre if it does not exist
-        try (PreparedStatement ps = dbConnection.prepareStatement("INSERT INTO genres (name) VALUES (?)")) {
+        try (Connection dbConnection = dataSource.getConnection();
+             PreparedStatement ps = dbConnection.prepareStatement("INSERT INTO genres (name) VALUES (?)")) {
             ps.setString(1, genre);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -191,7 +195,8 @@ public class MovieSAXParser extends DefaultHandler {
     }
 
     private boolean checkIdUniqueness(String id) {
-        try (PreparedStatement ps = dbConnection.prepareStatement("SELECT COUNT(*) FROM movies WHERE id = ?")) {
+        try (Connection dbConnection = dataSource.getConnection();
+             PreparedStatement ps = dbConnection.prepareStatement("SELECT COUNT(*) FROM movies WHERE id = ?")) {
             ps.setString(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

@@ -6,10 +6,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import com.example.utils.RecaptchaVerifyUtils;
+import javax.sql.DataSource;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 @WebServlet(name = "FormReCaptcha", urlPatterns = "/form-recaptcha")
 public class FormRecaptcha extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    private DataSource dataSource;
+
+    public void init() {
+        try {
+            InitialContext initialContext = new InitialContext();
+            dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/moviedb");
+        } catch (NamingException e) {
+            throw new RuntimeException("Failed to initialize DataSource", e);
+        }
+    }
 
     public String getServletInfo() {
         return "Servlet connects to MySQL database and displays result of a SELECT";
@@ -37,18 +51,9 @@ public class FormRecaptcha extends HttpServlet {
             return;
         }
 
-        String loginUser = "mytestuser";
-        String loginPasswd = "My6$Password";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
-
         response.setContentType("text/html"); // Response mime type
 
-        try {
-            // Create a new connection to database
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            Connection dbCon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-
+        try (Connection dbCon = dataSource.getConnection()) {
             // Retrieve parameter "name" from request, which refers to the value of <input name="name"> in index.html
             String name = request.getParameter("name");
 

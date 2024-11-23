@@ -3,20 +3,30 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import javax.naming.InitialContext;
 
 public class ActorParserMain {
     public static void main(String[] args) {
-        String dbUrl = "jdbc:mysql://localhost:3306/moviedb";
-        String dbUser = "mytestuser";
-        String dbPassword = "My6$Password";
+        DataSource dataSource;
+
+        try {
+            InitialContext context = new InitialContext();
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/moviedb");
+        } catch (NamingException e) {
+            System.err.println("Failed to initialize DataSource.");
+            e.printStackTrace();
+            return;
+        }
 
         Map<String, String> actorsCache = new ConcurrentHashMap<>();
         Map<String, String> moviesCache = new ConcurrentHashMap<>();
 
-        try (Connection dbConnection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
+        try (Connection dbConnection = dataSource.getConnection()) {
             System.out.println("Database connection established.");
 
-            ActorParser parser = new ActorParser(dbConnection, actorsCache, moviesCache);
+            ActorParser parser = new ActorParser(dataSource, actorsCache, moviesCache);
 //            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/actors63.xml");
 
             parser.parseDocument("../stanford-movies/actors63.xml");

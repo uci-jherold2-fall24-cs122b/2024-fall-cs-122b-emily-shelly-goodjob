@@ -5,23 +5,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 public class MovieCastParserMain {
-
-    private static final String DB_URL = System.getenv("DB_URL") != null
-            ? System.getenv("DB_URL")
-            : "jdbc:mysql://localhost:3306/moviedb"; // fallback to localhost
-
-    private static final String USER = "mytestuser";
-    private static final String PASS = "My6$Password";
 
     public static void main(String[] args) {
         // Initialize caches to track existing records in memory
         Map<String, String> actorsCache = new ConcurrentHashMap<>();
         Map<String, String> moviesCache = new ConcurrentHashMap<>();
 
+        DataSource dataSource;
+        try {
+            InitialContext context = new InitialContext();
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/moviedb");
+        } catch (NamingException e) {
+            System.err.println("Failed to initialize DataSource.");
+            e.printStackTrace();
+            return;
+        }
+
         // Establish a connection to the database
-        try (Connection dbConnection = DriverManager.getConnection(DB_URL, USER, PASS)) {
+        try (Connection dbConnection = dataSource.getConnection()) {
             System.out.println("Database connection established.");
 
             // Populate caches with existing database data
@@ -29,7 +35,7 @@ public class MovieCastParserMain {
             populateCache(dbConnection, moviesCache, "SELECT id FROM movies", "id");
 
             // Initialize and run the MovieCastParser
-            MovieCastParser parser = new MovieCastParser(dbConnection, actorsCache, moviesCache);
+            MovieCastParser parser = new MovieCastParser(dataSource, actorsCache, moviesCache);
 //            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/casts124.xml");
             parser.parseDocument("../stanford-movies/casts124.xml");
         } catch (SQLException e) {

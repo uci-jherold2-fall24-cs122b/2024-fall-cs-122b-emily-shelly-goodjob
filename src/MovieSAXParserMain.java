@@ -1,27 +1,33 @@
 import java.sql.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 public class MovieSAXParserMain {
-
-    private static final String DB_URL = System.getenv("DB_URL") != null
-            ? System.getenv("DB_URL")
-            : "jdbc:mysql://localhost:3306/moviedb"; // fallback to localhost
-
-    private static final String USER = "mytestuser";
-    private static final String PASS = "My6$Password";
 
     public static void main(String[] args) {
         Map<String, String> moviesCache = new ConcurrentHashMap<>();
         Map<String, String> genresCache = new ConcurrentHashMap<>();
         Map<String, String> starsCache = new ConcurrentHashMap<>();
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS)) {
+        DataSource dataSource;
+        try {
+            InitialContext context = new InitialContext();
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/moviedb");
+        } catch (NamingException e) {
+            System.err.println("Failed to initialize DataSource.");
+            e.printStackTrace();
+            return;
+        }
+
+        try (Connection connection = dataSource.getConnection()) {
             populateCache(connection, moviesCache, "SELECT title, year, director FROM movies", "title", "year", "director");
             populateCache(connection, genresCache, "SELECT name FROM genres", "name");
             populateCache(connection, starsCache, "SELECT name, birthYear FROM stars", "name", "birthYear");
 
-            MovieSAXParser parser = new MovieSAXParser(connection, moviesCache, genresCache, starsCache);
+            MovieSAXParser parser = new MovieSAXParser(dataSource, moviesCache, genresCache, starsCache);
 //            parser.parseDocument("/Users/wangemily/Desktop/cs122b/stanford-movies/mains243.xml");
             parser.parseDocument("../stanford-movies/mains243.xml");
 

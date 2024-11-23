@@ -2,6 +2,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.sql.DataSource;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
@@ -19,14 +20,14 @@ public class MovieCastParser extends DefaultHandler {
     private Map<String, String> existingActorsCache; // Stores <name_birthYear, id>
     private Map<String, String> existingRolesCache;
     private String tempVal;
-    private Connection dbConnection;
+    private DataSource dataSource;
     private ExecutorService executorService;
     private Actor currentActor;
     private boolean isRole = false;
     private String currentMovieId;
 
-    public MovieCastParser(Connection dbConnection, Map<String, String> actorsCache, Map<String, String> rolesCache) {
-        this.dbConnection = dbConnection;
+    public MovieCastParser(DataSource dataSource, Map<String, String> actorsCache, Map<String, String> rolesCache) {
+        this.dataSource = dataSource;
         this.existingActorsCache = actorsCache;
         this.existingRolesCache = rolesCache;
         this.executorService = Executors.newFixedThreadPool(8);
@@ -78,8 +79,10 @@ public class MovieCastParser extends DefaultHandler {
 
         if (!existingActorsCache.containsKey(actorKey)) {
             // If the actor is not in the cache, check and insert into database
-            try (PreparedStatement checkStmt = dbConnection.prepareStatement(
-                    "SELECT id FROM stars WHERE name = ? AND (birthYear = ? OR birthYear IS NULL AND ? IS NULL)")) {
+            try (Connection dbConnection = dataSource.getConnection();
+                 PreparedStatement checkStmt = dbConnection.prepareStatement(
+                         "SELECT id FROM stars WHERE name = ? AND (birthYear = ? OR birthYear IS NULL AND ? IS NULL)"
+                 )) {
                 checkStmt.setString(1, actor.getName());
                 if (actor.getBirthYear() != null) {
                     checkStmt.setInt(2, actor.getBirthYear());
@@ -126,8 +129,9 @@ public class MovieCastParser extends DefaultHandler {
     }
 
     private void linkActorToMovie(String starId, String movieId) {
-        try (PreparedStatement checkLinkStmt = dbConnection.prepareStatement(
-                "SELECT COUNT(*) FROM stars_in_movies WHERE starId = ? AND movieId = ?")) {
+        try (Connection dbConnection = dataSource.getConnection();
+             PreparedStatement checkLinkStmt = dbConnection.prepareStatement(
+                     "SELECT COUNT(*) FROM stars_in_movies WHERE starId = ? AND movieId = ?")) {
             checkLinkStmt.setString(1, starId);
             checkLinkStmt.setString(2, movieId);
             try (ResultSet rs = checkLinkStmt.executeQuery()) {
@@ -159,7 +163,8 @@ public class MovieCastParser extends DefaultHandler {
     }
 
     private boolean checkIdUniqueness(String id) {
-        try (PreparedStatement ps = dbConnection.prepareStatement("SELECT COUNT(*) FROM stars WHERE id = ?")) {
+        try (Connection dbConnection = dataSource.getConnection();
+             PreparedStatement ps = dbConnection.prepareStatement("SELECT COUNT(*) FROM stars WHERE id = ?")) {
             ps.setString(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

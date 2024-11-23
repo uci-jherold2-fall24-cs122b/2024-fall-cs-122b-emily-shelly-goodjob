@@ -2,6 +2,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.sql.DataSource;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
@@ -17,12 +18,12 @@ public class ActorParser extends DefaultHandler {
     private Map<String, String> existingActorsCache;
     private Map<String, String> existingMoviesCache;
     private String tempVal;
-    private Connection dbConnection;
+    private DataSource dataSource;
     private ExecutorService executorService;
     private Actor currentActor;
 
-    public ActorParser(Connection dbConnection, Map<String, String> actorsCache, Map<String, String> moviesCache) {
-        this.dbConnection = dbConnection;
+    public ActorParser(DataSource dataSource, Map<String, String> actorsCache, Map<String, String> moviesCache) {
+        this.dataSource = dataSource;
         this.existingActorsCache = actorsCache;
         this.existingMoviesCache = moviesCache;
         this.executorService = Executors.newFixedThreadPool(8);
@@ -97,8 +98,10 @@ public class ActorParser extends DefaultHandler {
         String actorKey = actor.getKey();
 
         if (!existingActorsCache.containsKey(actorKey)) {
-            try (PreparedStatement checkStmt = dbConnection.prepareStatement(
-                    "SELECT id FROM stars WHERE name = ? AND (birthYear = ? OR birthYear IS NULL AND ? IS NULL)")) {
+            try (Connection dbConnection = dataSource.getConnection();
+                 PreparedStatement checkStmt = dbConnection.prepareStatement(
+                         "SELECT id FROM stars WHERE name = ? AND (birthYear = ? OR birthYear IS NULL AND ? IS NULL)"
+                 )) {
                 checkStmt.setString(1, actor.getName());
                 if (actor.getBirthYear() != null) {
                     checkStmt.setInt(2, actor.getBirthYear());
@@ -155,7 +158,8 @@ public class ActorParser extends DefaultHandler {
     }
 
     private boolean checkIdUniqueness(String id) {
-        try (PreparedStatement ps = dbConnection.prepareStatement("SELECT COUNT(*) FROM stars WHERE id = ?")) {
+        try (Connection dbConnection = dataSource.getConnection();
+             PreparedStatement ps = dbConnection.prepareStatement("SELECT COUNT(*) FROM stars WHERE id = ?")) {
             ps.setString(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
