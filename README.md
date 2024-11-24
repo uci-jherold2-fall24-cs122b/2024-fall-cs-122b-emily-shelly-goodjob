@@ -192,3 +192,9 @@
       }
       ```
       - ###### PreparedStatement ensures consistent query execution and parameter handling, regardless of the database.
+
+- ### Master/Slave
+  - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
+
+  - #### How read/write requests were routed to Master/Slave SQL?
+    

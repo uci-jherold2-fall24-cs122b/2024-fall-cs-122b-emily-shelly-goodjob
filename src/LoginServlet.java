@@ -21,20 +21,20 @@ public class LoginServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Retrieve reCAPTCHA response token
-//        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-//        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
 
         JsonObject responseJsonObject = new JsonObject();
 
 //        // Verify reCAPTCHA
-//        try {
-//            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
-//        } catch (Exception e) {
-//            responseJsonObject.addProperty("status", "fail");
-//            responseJsonObject.addProperty("message", "reCAPTCHA verification failed");
-//            response.getWriter().write(responseJsonObject.toString());
-//            return; // Exit if reCAPTCHA fails
-//        }
+        try {
+            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+        } catch (Exception e) {
+            responseJsonObject.addProperty("status", "fail");
+            responseJsonObject.addProperty("message", "reCAPTCHA verification failed");
+            response.getWriter().write(responseJsonObject.toString());
+            return; // Exit if reCAPTCHA fails
+        }
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
