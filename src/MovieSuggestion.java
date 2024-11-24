@@ -30,6 +30,12 @@ public class MovieSuggestion extends HttpServlet {
         }
     }
 
+    private int calculateEditDistanceThreshold(int queryLength) {
+        if (queryLength <= 4) return 1;
+        if (queryLength <= 8) return 2;
+        return 3;
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Connection dbCon = null;
 
@@ -51,9 +57,18 @@ public class MovieSuggestion extends HttpServlet {
                 }
             }
 
-            String sql = "SELECT id, title FROM movies WHERE MATCH(title) AGAINST(? IN BOOLEAN MODE) LIMIT 10";
+            String sql = "SELECT id, title " +
+                    "FROM movies " +
+                    "WHERE MATCH(title) AGAINST(? IN BOOLEAN MODE) " +
+                    "   OR edth(title, ?, ?) " +
+                    "LIMIT 10";
+
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, searchString.toString().trim());
+
+                ps.setString(2, query);
+                ps.setInt(3, calculateEditDistanceThreshold(query.length()));
+
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         String id = rs.getString("id");
