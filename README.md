@@ -123,22 +123,23 @@
     - ##### UpdateEmployeePassword: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1fe84e8e801e558db5af27c826f98836c7ba56ee/src/UpdateEmployeePassword.java
 
   - #### Explain how Connection Pooling is utilized in the Fabflix code.
-    - ##### Connection pooling is implemented in Fabflix to improve database performance and resource management. Instead of creating a new database connection for every request, the application uses a pool of reusable connections. These connections are fetched from the pool when needed and returned after use, significantly reducing the overhead of repeatedly opening and closing connections. This is particularly useful in high-traffic scenarios where multiple requests need to access the database simultaneously.
+    - ##### Connection pooling is implemented in Fabflix to enhance database performance and manage resources efficiently. Instead of opening a new database connection for every request, a pool of reusable connections is maintained.
+    - ##### Connections are fetched from the pool when needed and returned after use, reducing the overhead of creating and destroying connections repeatedly. This is particularly effective in handling high-traffic scenarios with multiple concurrent database requests.
     - ##### In the Fabflix code: 
       - ###### A DataSource object is used to manage the connection pool. It is configured in the context.xml file for Tomcat. 
       - ###### Servlets, such as SearchServlet, obtain a connection from the pool using DataSource.getConnection() instead of creating a new connection with DriverManager. 
-      - ###### Connection pooling ensures that database connections are properly managed and returned to the pool after each use, avoiding resource leaks.
+      - ###### Connection pooling ensures connections are properly returned to the pool after use, avoiding resource leaks and enhancing scalability.
   
   - #### Explain how Connection Pooling works with two backend SQL.
-    - ##### Explanation
-      - ###### Connection pooling in Fabflix enables efficient database operations by maintaining separate pools of reusable connections for multiple backend SQL databases. This approach ensures optimized resource utilization and avoids the overhead of creating and closing connections repeatedly.
-      
+    - ##### Connection pooling in Fabflix enables efficient operations by maintaining separate pools for Master and Slave databases, defined as jdbc/writeconnect and jdbc/readconnect in the context.xml file.
+    - ##### Write requests are routed to the Master database using the jdbc/writeconnect pool, ensuring updates like INSERT, UPDATE, and DELETE occur on the primary data source.
+    - ##### Read requests are routed to the Slave database using the jdbc/readconnect pool, optimizing heavy SELECT queries.
     - ##### LoginServlet
-      - ###### Connection Pool: Configured as jdbc/moviedb for the primary database.
-      - ###### Usage: The servlet retrieves a connection from the pool to validate user credentials.
+      - ###### Uses the jdbc/writeconnect pool to validate user credentials.
+      - ###### The write connection ensures session integrity during login operations.
     - ##### SingleMovieServlet
-      - ###### Interacts with the primary database using connection pooling.
-      - ###### Retrieves a connection from the jdbc/moviedb pool for querying movie details.
+      - ###### Retrieves data from the Slave database using the jdbc/readconnect pool.
+      - ###### Queries for movie details, offloading read operations from the Master database.
 
 - ### Prepared Statements
   - #### Include the filename/path of all code/configuration files in GitHub of using Prepared Statements.
@@ -201,4 +202,7 @@
       
   - #### How read/write requests were routed to Master/Slave SQL?
    - ##### The context.xml file defines two data sources for routing read/write requests to Master/Slave SQL. Write requests are directed to the jdbc/writeconnect resource, configured with the Master's IP address, while read requests use jdbc/readconnect, pointing to the Slave's IP. The application uses InitialContext for JNDI lookup to retrieve the appropriate data source. Write operations like INSERT, UPDATE, and DELETE use the Master, while SELECT operations use the Slave. Environment handling is controlled via the DB_ENV variable, with separate configurations for dev and prod. Connection pooling is enabled for both data sources using Tomcat’s DataSourceFactory, improving performance and resource efficiency. This setup ensures optimal query distribution, where the Master handles critical updates, and the Slave handles heavy read traffic. All configurations are managed in context.xml for easy scaling and separation of concerns.
-    
+
+- ### Fuzzy Search
+  - #### Explanation of the design and the implementation:
+    - #####
