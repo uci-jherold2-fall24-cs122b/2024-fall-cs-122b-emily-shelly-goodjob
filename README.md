@@ -195,6 +195,10 @@
 
 - ### Master/Slave
   - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-
+    - ##### web.xml: Located in src/main/webapp/WEB-INF/, it contains JNDI resource configurations for the Master and Slave databases.
+    - ##### context.xml: Found in src/main/webapp/META-INF/, it defines DataSources for Master (write) and Slave (read).
+    - ##### Servlets: Files like SearchServlet.java, SingleMovieServlet.java, and AddMovieServlet.java in src/main/java/ demonstrate query routing.
+      
   - #### How read/write requests were routed to Master/Slave SQL?
+   - ##### The context.xml file defines two data sources for routing read/write requests to Master/Slave SQL. Write requests are directed to the jdbc/writeconnect resource, configured with the Master's IP address, while read requests use jdbc/readconnect, pointing to the Slave's IP. The application uses InitialContext for JNDI lookup to retrieve the appropriate data source. Write operations like INSERT, UPDATE, and DELETE use the Master, while SELECT operations use the Slave. Environment handling is controlled via the DB_ENV variable, with separate configurations for dev and prod. Connection pooling is enabled for both data sources using Tomcat’s DataSourceFactory, improving performance and resource efficiency. This setup ensures optimal query distribution, where the Master handles critical updates, and the Slave handles heavy read traffic. All configurations are managed in context.xml for easy scaling and separation of concerns.
     
