@@ -28,6 +28,12 @@ public class MainServlet extends HttpServlet {
         }
     }
 
+    private int calculateEditDistanceThreshold(int queryLength) {
+        if (queryLength <= 4) return 1;
+        if (queryLength <= 8) return 2;
+        return 3;
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String genre = request.getParameter("genre");
@@ -149,7 +155,7 @@ public class MainServlet extends HttpServlet {
                     }
                 }
 
-                // Full-text search logic
+                // Full-text search and fuzzy search logic
                 String sql = "SELECT m.id, m.title, m.year, m.director, r.rating, " +
                         "(SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ', ') " +
                         " FROM genres g " +
@@ -177,13 +183,16 @@ public class MainServlet extends HttpServlet {
                         "FROM movies m " +
                         "LEFT JOIN ratings r ON m.id = r.movieId " +
                         "WHERE MATCH(m.title) AGAINST(? IN BOOLEAN MODE) " +
+                        "   OR edth(m.title, ?, ?) " +
                         "GROUP BY m.id, m.title, m.year, m.director, r.rating " +
                         orderByClause + limitOffsetClause;
 
                 statement = dbCon.prepareStatement(sql);
-                statement.setString(1, searchString.toString().trim());
-                statement.setInt(2, moviesPerPage);
-                statement.setInt(3, page * moviesPerPage);
+                statement.setString(1, searchString.toString().trim()); // Full-text search
+                statement.setString(2, queryParam.trim()); // Fuzzy search query
+                statement.setInt(3, calculateEditDistanceThreshold(queryParam.length())); // Edit distance threshold
+                statement.setInt(4, moviesPerPage); // Limit
+                statement.setInt(5, page * moviesPerPage); // Offset
 
                 ResultSet rs = statement.executeQuery();
 
