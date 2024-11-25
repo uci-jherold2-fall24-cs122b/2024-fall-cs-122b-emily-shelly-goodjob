@@ -86,15 +86,15 @@
   - ###### Resolution: Reconnected to the database and resumed parsing.
 
 ## Project 4
-  - #### Team#:
+  - #### Team#: emily_shelly_goodjob
 
   - #### Names: Emily, Shelly
 
-  - #### Project 4 Video Demo Link:
+  - #### Project 4 Video Demo Link: https://www.youtube.com/watch?v=xR7dJU19ybY
 
-  - #### Instruction of deployment:
+  - #### Instruction of deployment: 
 
-  - #### Collaborations and Work Distribution:
+  - #### Collaborations and Work Distribution: Shelly & Emily Task 1-6
 
 - ### Connection Pooling
   - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
