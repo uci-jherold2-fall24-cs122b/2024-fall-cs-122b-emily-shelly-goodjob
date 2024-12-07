@@ -1,0 +1,65 @@
+<!-- This example is following frontend and backend separation.
+
+    This .html performs two steps:
+    1. Create a html template skeleton, with all the elements defined (some left empty) and named with ids.
+    2. Load index.js to populate the data into empty elements.
+    -->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../movies.css" />
+    <title>Add A Movie</title>
+</head>
+<body>
+<ul class="nav-dashboard">
+    <div><img class="logo-img" src="../Fablix.png" alt="Fablix logo" /></div>
+    <li class="nav-item">
+        <a class="nav-link disabled brand-name" aria-disabled="true">Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="add_star.html">Add A Star</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="add_movie.html">Add A Movie</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="add_genre.html">Add A Genre</a>
+    </li>
+</ul>
+
+<div class="page-title-text-add">Add A Movie</div>
+<div class="page-subtitle-text-add">New Movie Details</div>
+<div id="add-info"></div>
+<div class="payment-bottom-container">
+    <form id="payment-form">
+        <input type="text" class="form-control" id="movieTitle" name="movieTitle" placeholder="Movie Title" required>
+        <input type="text" class="form-control" id="year" name="year" placeholder="Year">
+        <input type="text" class="form-control" id="director" name="director" placeholder="Director">
+        <input type="text" class="form-control" id="starName" name="starName" placeholder="Star Name">
+        <input type="text" class="form-control" id="birthYear" name="birthYear" placeholder="Birth Year">
+        <input type="text" class="form-control" id="genre" name="genre" placeholder="Genre Name">
+    </form>
+    <button type="button" class="proceed-to-pay-btn active" onclick="">Submit</button>
+</div>
+
+<footer class="footer">
+    <p>2024 <span class="highlighted-name">Emily Wang</span> & <span class="highlighted-name">Yiwen Wu</span>. All rights reserved.</p>
+</footer>
+
+<!-- Load jQuery and Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script src="add_movie.js"></script>
+</body>
+</html>
