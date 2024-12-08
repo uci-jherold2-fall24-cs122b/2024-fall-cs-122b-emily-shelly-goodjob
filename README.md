@@ -24,9 +24,6 @@
 ## Project 3
 - #### Demo Video Link**: [Project 3 Demo](https://www.youtube.com/watch?v=r4CbXQOFUdQ)
 
-- #### Contribution
-- ##### Tasks 1-6: Emily + Shelly
-
 - #### XML Parsing Optimizations
 
 - ##### Multi-threaded Parsing with Task Queues
@@ -86,10 +83,6 @@
   - ###### Resolution: Reconnected to the database and resumed parsing.
 
 ## Project 4
-  - #### Team#: emily_shelly_goodjob
-
-  - #### Names: Emily, Shelly
-
   - #### Demo Video Link**: [Project 4 Demo](https://www.youtube.com/watch?v=xR7dJU19ybY)
 
   - #### Instruction of deployment: 
@@ -99,29 +92,28 @@
 - ### Connection Pooling
   - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
     - ##### [ActorParser](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/527c2cf065199db49b8d0d9661b5d9776a9d9f59/src/ActorParser.java)
-    - ##### ActorParser: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/527c2cf065199db49b8d0d9661b5d9776a9d9f59/src/ActorParser.java
-    - ##### ActorParserMain: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/c4916f07b4540db7268c5a113fface7da8a65e57/src/ActorParserMain.java
-    - ##### AddMovieServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/d6e6ba38f246cc85a9b3903f99810daada4cd9c5/src/AddMovieServlet.java
-    - ##### AddStarServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/d6e6ba38f246cc85a9b3903f99810daada4cd9c5/src/AddStarServlet.java
-    - ##### AddToCartServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/ade5769274632e321876dd8d857381a8745122a6/src/AddToCartServlet.java
-    - ##### DeleteCartItemServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/DeleteCartItemServlet.java
-    - ##### FormRecaptcha: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/0c4f03f15914e6f699e38727547f1013afaf867b/src/FormRecaptcha.java
-    - ##### GenreServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1734c44a27d2476ec05389cf21f4f01b56178d86/src/GenreServlet.java
-    - ##### GetCartServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/GetCartServlet.java
-    - ##### LoginServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/71c5df8245d72b83cbd994db82a17bdddd76dce2/src/LoginServlet.java
-    - ##### MainServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/71c5df8245d72b83cbd994db82a17bdddd76dce2/src/MainServlet.java
-    - ##### MovieCastParser: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/fe6bd6e54e19e45c53173db3d9707ab70425a3c2/src/MovieCastParser.java
-    - ##### MovieCastParserMain: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/c4916f07b4540db7268c5a113fface7da8a65e57/src/MovieCastParserMain.java
-    - ##### MovieSAXParser: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/b00e1982b925fa9bdc65c7d472e9c68577e19968/src/MovieSAXParser.java
-    - ##### MovieSAXParserMain: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/c4916f07b4540db7268c5a113fface7da8a65e57/src/MovieSAXParserMain.java
-    - ##### MoviesServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7ec0e7ec38b7cecbc1b0078a3173cb6068a6e05f/src/MoviesServlet.java
-    - ##### MovieSuggestion: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/24228483744d56b12e25dc109a7013f2e95bb4ff/src/MovieSuggestion.java
-    - ##### PlaceOrderServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/f362d20e9dc4b467016e405775bd0326e68665e0/src/PlaceOrderServlet.java
-    - ##### SingleMovieServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/5feaed92f82fba135b08963c58d286d54a6faae7/src/SingleMovieServlet.java
-    - ##### SingleStarServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/887a84b91a1dd3208f5e339e40e0b69bd1d380ae/src/SingleStarServlet.java
-    - ##### TitleServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1734c44a27d2476ec05389cf21f4f01b56178d86/src/TitleServlet.java
-    - ##### UpdateCartItemServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/UpdateCartItemServlet.java
-    - ##### UpdateEmployeePassword: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1fe84e8e801e558db5af27c826f98836c7ba56ee/src/UpdateEmployeePassword.java
+    - ##### [ActorParserMain](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/c4916f07b4540db7268c5a113fface7da8a65e57/src/ActorParserMain.java)
+    - ##### [AddMovieServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/d6e6ba38f246cc85a9b3903f99810daada4cd9c5/src/AddMovieServlet.java)
+    - ##### [AddStarServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/d6e6ba38f246cc85a9b3903f99810daada4cd9c5/src/AddStarServlet.java)
+    - ##### [AddToCartServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/ade5769274632e321876dd8d857381a8745122a6/src/AddToCartServlet.java)
+    - ##### [DeleteCartItemServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/DeleteCartItemServlet.java)
+    - ##### [FormRecaptcha](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/0c4f03f15914e6f699e38727547f1013afaf867b/src/FormRecaptcha.java)
+    - ##### [GenreServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1734c44a27d2476ec05389cf21f4f01b56178d86/src/GenreServlet.java)
+    - ##### [GetCartServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/GetCartServlet.java)
+    - ##### [LoginServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/71c5df8245d72b83cbd994db82a17bdddd76dce2/src/LoginServlet.java)
+    - ##### [MainServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/71c5df8245d72b83cbd994db82a17bdddd76dce2/src/MainServlet.java)
+    - ##### [MovieCastParser](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/fe6bd6e54e19e45c53173db3d9707ab70425a3c2/src/MovieCastParser.java)
+    - ##### [MovieCastParserMain](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/c4916f07b4540db7268c5a113fface7da8a65e57/src/MovieCastParserMain.java)
+    - ##### [MovieSAXParser](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/b00e1982b925fa9bdc65c7d472e9c68577e19968/src/MovieSAXParser.java)
+    - ##### [MovieSAXParserMain](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/c4916f07b4540db7268c5a113fface7da8a65e57/src/MovieSAXParserMain.java)
+    - ##### [MoviesServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7ec0e7ec38b7cecbc1b0078a3173cb6068a6e05f/src/MoviesServlet.java)
+    - ##### [MovieSuggestion](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/24228483744d56b12e25dc109a7013f2e95bb4ff/src/MovieSuggestion.java)
+    - ##### [PlaceOrderServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/f362d20e9dc4b467016e405775bd0326e68665e0/src/PlaceOrderServlet.java)
+    - ##### [SingleMovieServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/5feaed92f82fba135b08963c58d286d54a6faae7/src/SingleMovieServlet.java)
+    - ##### [SingleStarServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/887a84b91a1dd3208f5e339e40e0b69bd1d380ae/src/SingleStarServlet.java)
+    - ##### [TitleServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1734c44a27d2476ec05389cf21f4f01b56178d86/src/TitleServlet.java)
+    - ##### [UpdateCartItemServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/UpdateCartItemServlet.java)
+    - ##### [UpdateEmployeePassword](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1fe84e8e801e558db5af27c826f98836c7ba56ee/src/UpdateEmployeePassword.java)
 
   - #### Explain how Connection Pooling is utilized in the Fabflix code.
     - ##### Connection pooling is implemented in Fabflix to enhance database performance and manage resources efficiently. Instead of opening a new database connection for every request, a pool of reusable connections is maintained.
@@ -144,24 +136,24 @@
 
 - ### Prepared Statements
   - #### Include the filename/path of all code/configuration files in GitHub of using Prepared Statements.
-    - ##### ActorParser: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/527c2cf065199db49b8d0d9661b5d9776a9d9f59/src/ActorParser.java
-    - ##### AddStarServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/d6e6ba38f246cc85a9b3903f99810daada4cd9c5/src/AddStarServlet.java
-    - ##### AddToCartServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/ade5769274632e321876dd8d857381a8745122a6/src/AddToCartServlet.java
-    - ##### DeleteCartItemServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/DeleteCartItemServlet.java
-    - ##### FormRecaptcha: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/0c4f03f15914e6f699e38727547f1013afaf867b/src/FormRecaptcha.java
-    - ##### GenreServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1734c44a27d2476ec05389cf21f4f01b56178d86/src/GenreServlet.java
-    - ##### GetCartServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/GetCartServlet.java
-    - ##### LoginServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/71c5df8245d72b83cbd994db82a17bdddd76dce2/src/LoginServlet.java
-    - ##### MainServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/71c5df8245d72b83cbd994db82a17bdddd76dce2/src/MainServlet.java
-    - ##### MovieCastParser: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/fe6bd6e54e19e45c53173db3d9707ab70425a3c2/src/MovieCastParser.java
-    - ##### MovieSAXParser: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/b00e1982b925fa9bdc65c7d472e9c68577e19968/src/MovieSAXParser.java
-    - ##### MoviesServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7ec0e7ec38b7cecbc1b0078a3173cb6068a6e05f/src/MoviesServlet.java
-    - ##### MovieSuggestion: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/24228483744d56b12e25dc109a7013f2e95bb4ff/src/MovieSuggestion.java
-    - ##### PlaceOrderServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/f362d20e9dc4b467016e405775bd0326e68665e0/src/PlaceOrderServlet.java
-    - ##### SingleMovieServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/5feaed92f82fba135b08963c58d286d54a6faae7/src/SingleMovieServlet.java
-    - ##### SingleStarServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/887a84b91a1dd3208f5e339e40e0b69bd1d380ae/src/SingleStarServlet.java
-    - ##### UpdateCartItemServlet: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/UpdateCartItemServlet.java
-    - ##### UpdateEmployeePassword: https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1fe84e8e801e558db5af27c826f98836c7ba56ee/src/UpdateEmployeePassword.java
+    - ##### [ActorParser](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/527c2cf065199db49b8d0d9661b5d9776a9d9f59/src/ActorParser.java)
+    - ##### [AddStarServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/d6e6ba38f246cc85a9b3903f99810daada4cd9c5/src/AddStarServlet.java)
+    - ##### [AddToCartServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/ade5769274632e321876dd8d857381a8745122a6/src/AddToCartServlet.java)
+    - ##### [DeleteCartItemServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/DeleteCartItemServlet.java)
+    - ##### [FormRecaptcha](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/0c4f03f15914e6f699e38727547f1013afaf867b/src/FormRecaptcha.java)
+    - ##### [GenreServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1734c44a27d2476ec05389cf21f4f01b56178d86/src/GenreServlet.java)
+    - ##### [GetCartServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/GetCartServlet.java)
+    - ##### [LoginServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/71c5df8245d72b83cbd994db82a17bdddd76dce2/src/LoginServlet.java)
+    - ##### [MainServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/71c5df8245d72b83cbd994db82a17bdddd76dce2/src/MainServlet.java)
+    - ##### [MovieCastParser](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/fe6bd6e54e19e45c53173db3d9707ab70425a3c2/src/MovieCastParser.java)
+    - ##### [MovieSAXParser](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/b00e1982b925fa9bdc65c7d472e9c68577e19968/src/MovieSAXParser.java)
+    - ##### [MoviesServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7ec0e7ec38b7cecbc1b0078a3173cb6068a6e05f/src/MoviesServlet.java)
+    - ##### [MovieSuggestion](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/24228483744d56b12e25dc109a7013f2e95bb4ff/src/MovieSuggestion.java)
+    - ##### [PlaceOrderServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/f362d20e9dc4b467016e405775bd0326e68665e0/src/PlaceOrderServlet.java)
+    - ##### [SingleMovieServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/5feaed92f82fba135b08963c58d286d54a6faae7/src/SingleMovieServlet.java)
+    - ##### [SingleStarServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/887a84b91a1dd3208f5e339e40e0b69bd1d380ae/src/SingleStarServlet.java)
+    - ##### [UpdateCartItemServlet](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/7e9ed1e4115016513dc2a20824c18a4e872573e0/src/UpdateCartItemServlet.java)
+    - ##### [UpdateEmployeePassword](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-emily-shelly-goodjob/blob/1fe84e8e801e558db5af27c826f98836c7ba56ee/src/UpdateEmployeePassword.java)
 
   - #### Explain how Prepared Statements is utilized in the Fabflix code.
     - ##### Prepared Statements automatically escape user inputs, preventing SQL injection attacks.
