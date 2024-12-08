@@ -43,6 +43,9 @@ public class LoginFilter implements Filter {
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
         // Check if the URL matches any allowed file types or specific allowed URIs
+        if (requestURI == null) {
+            return false; // Log the issue here
+        }
         return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
     }
 
