@@ -209,7 +209,7 @@
     - ##### How calculateEditDistanceThreshold is Used: The calculateEditDistanceThreshold function is implemented in the main search and autocomplete files to determine the allowable edit distance for fuzzy search. For both components, the threshold dynamically adjusts based on the query length—shorter queries allow fewer edits to ensure accuracy, while longer queries are more flexible to account for complex or lengthy terms. This design helps maintain a balance between result relevance and usability.
 
 ## Project 5
-- #### Demo Video Link**: [Project 3 Demo]()
+- #### Demo Video Link**: [Project 3 Demo](https://www.youtube.com/watch?v=BYKkp61kEK0&t=4s)
 
 - #### Contribution
 - ##### Tasks 1-4: Emily + Shelly
