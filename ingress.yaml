@@ -4,7 +4,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx # Specifies that this Ingress resource should be handled by the nginx Ingress controller.
     nginx.ingress.kubernetes.io/affinity: "cookie" # # Enables session affinity based on cookies, ensuring requests from the same client are routed to the same backend.
-    nginx.ingress.kubernetes.io/session-cookie-name: "stickounet" # Sets the name of the session cookie used for maintaining session affinity.
+    nginx.ingress.kubernetes.io/session-cookie-name: "fabflixsession" # Sets the name of the session cookie used for maintaining session affinity.
     nginx.ingress.kubernetes.io/session-cookie-expires: "172800" # Specifies the expiration time of the session cookie in seconds (172800 seconds = 2 days).
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800" # Sets the maximum age of the session cookie in seconds, aligning with the expiration time.
   name: fabflix-ingress # Names this Ingress resource as "fabflix-ingress".
