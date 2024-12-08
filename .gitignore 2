@@ -10,3 +10,5 @@ bin/
 # Ignore database files
 *.db
 *.sqlite
+
+.DS_Store
