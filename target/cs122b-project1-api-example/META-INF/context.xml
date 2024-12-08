@@ -10,7 +10,7 @@
               type="javax.sql.DataSource"
               username="mytestuser"
               password="My6$Password"
-              url="jdbc:mysql://localhost:3306/moviedb"/>
+              url="jdbc:mysql://mysql-primary:3306/moviedb"/>
 
     <Resource name="jdbc/writeconnect"
               auth="Container"
@@ -20,7 +20,7 @@
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="mytestuser"
               password="My6$Password"
-              url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+              url="jdbc:mysql://mysql-primary:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
 
     <Resource name="jdbc/readconnect"
               auth="Container"
@@ -30,7 +30,7 @@
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="mytestuser"
               password="My6$Password"
-              url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+              url="jdbc:mysql://mysql-secondary:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
 
     <Environment name="DB_ENV" value="prod" type="java.lang.String"/>
 
@@ -42,7 +42,7 @@
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="mytestuser"
               password="My6$Password"
-              url="jdbc:mysql://MASTER_IP:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+              url="jdbc:mysql://mysql-primary:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
 
     <Resource name="jdbc/readconnect"
               auth="Container"
@@ -52,5 +52,5 @@
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="mytestuser"
               password="My6$Password"
-              url="jdbc:mysql://SLAVE_IP:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+              url="jdbc:mysql://mysql-secondary:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
 </Context>

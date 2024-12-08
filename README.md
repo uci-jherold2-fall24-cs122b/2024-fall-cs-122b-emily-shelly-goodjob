@@ -207,3 +207,15 @@
   - #### Explanation of the design and the implementation:
     - ##### Where edth is Used: The edth function is utilized in both the autocomplete and main search features. In the autocomplete part, it is integrated into the SQL query to retrieve titles similar to the user's partial input, ensuring that even minor typos yield relevant suggestions. In the main search part, it works alongside full-text search to provide results for misspelled or incomplete queries, improving the overall search experience.
     - ##### How calculateEditDistanceThreshold is Used: The calculateEditDistanceThreshold function is implemented in the main search and autocomplete files to determine the allowable edit distance for fuzzy search. For both components, the threshold dynamically adjusts based on the query length—shorter queries allow fewer edits to ensure accuracy, while longer queries are more flexible to account for complex or lengthy terms. This design helps maintain a balance between result relevance and usability.
+
+## Project 5
+- #### Demo Video Link**: [Project 3 Demo]()
+
+- #### Contribution
+- ##### Tasks 1-4: Emily + Shelly
+
+- #### Throughput numbers
+| Configuration                          | Throughput (req/s) |
+|----------------------------------------|--------------------|
+| 3 Worker Nodes, 2 Fabflix Pods         | 6569.45 req/min    |
+| 4 Worker Nodes, 3 Fabflix Pods         | 6671.00 req/min    |
